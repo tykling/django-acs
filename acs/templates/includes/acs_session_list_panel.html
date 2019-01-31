@@ -1,0 +1,72 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsSessionList' headline=headline|default:"ACS Session List" %}
+        {% if acs_session_list %}
+            {% if not included %}
+            <p>
+              {% url 'acs_session_list' as all_sessions %}
+              {% url 'acs_session_list_failed' as only_failed %}
+              {% url 'acs_session_list_failed_verified' as only_failed_verified %}
+              {% include 'includes/button.html' with url=all_sessions buttontext="Show All Sessions" %}
+              {% include 'includes/button.html' with url=only_failed buttontext="Show Only Failed Sessions" %}
+              {% include 'includes/button.html' with url=only_failed_verified buttontext="Show Only Dailed and IP Verified Sessions" %}
+            </p>
+            {% endif %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ACS Session</th>
+                        <th>ACS Device</th>
+                        <th>Client IP</th>
+                        <th class='text-center'>Client IP Verified</th>
+                        <th>Inform Event Codes</th>
+                        <th>HTTP Request</th>
+                        <th>HTTP Response</th>
+                        <th>Start</th>
+                        <th>Duration</th>
+                        <th>Device Uptime</th>
+                        <th>Last RPC Method</th>
+                        <th>Bytes Received</th>
+                        <th>Bytes Sent</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acs_session in acs_session_list %}
+                    {% url 'acs_session_detail' pk=acs_session.id as acs_session_detail_url %}
+                    {% url 'acs_device_detail' pk=acs_session.acs_device.id as acs_device_detail_url %}
+                    <tr {% if not acs_session.session_result %} class="danger"{% endif %}>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_session_detail_url %}{{ acs_session.tag }}</td>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_detail_url %}{{ acs_session.acs_device.tag }}</td>
+                        <td><a href="http://{{ acs_session.client_ip }}/" target="_blank">{{ acs_session.client_ip }}</a></td>
+                        <td class='text-center'>{{ acs_session.client_ip_verified|truefalseicon|safe }}</td>
+                        <td>{% for iec in acs_session.inform_eventcodes %}{{ iec }}<br>{% endfor %}</td>
+                        <td><span class="badge">{{ acs_session.acs_http_requests.count }}</span></td>
+                        <td><span class="badge">{{ acs_session.acs_http_responses.count }}</span></td>
+                        <td>{{ acs_session.start }}</td>
+                        <td>{{ acs_session.duration | pretty_timedelta }}</td>
+                        <td>{{ acs_session.device_uptime | datetimerange_as_pretty_delta }}</td>
+                        <td>{{ acs_session.get_latest_rpc_method }}</td>
+                        <td><span class="badge">{{ acs_session.bytes_in }} bytes</span></td>
+                        <td><span class="badge">{{ acs_session.bytes_out }} bytes</span></td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_session_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if included %}
+                {% url 'acsdevice_all_acs_sessions' pk=acs_device.id as all_acs_sessions_url %}
+                {% include 'includes/button.html' with url=all_acs_sessions_url buttontext='Show All ACS Sessions for This ACS Device' %}
+            {% endif %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No ACS Sessions Found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

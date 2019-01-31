@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block head_title %}ACS Queue Job List{% endblock head_title %}
+{% block content %}
+    <p>
+      {% url 'acs_queue_job_list' as show_all_url %}
+      {% include 'includes/button.html' with url=show_all_url icon='fa-list' buttontext='Show All' %}
+
+      {% url 'acs_queue_job_list_hideautomatic' as hide_automatic_url %}
+      {% include 'includes/button.html' with url=hide_automatic_url icon='fa-list' buttontext='Hide Automatic' %}
+    </p>
+    {% include 'includes/acs_queue_job_list_panel.html' with acs_queue_job_list=object_list %}
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS Session Details for "|addstr:acs_session.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_session_detail' pk=acs_session.id as acs_session_detail_url %}
+                {% url 'acs_device_detail' pk=acs_session.acs_device.id as acs_device_detail_url %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS Session</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_http_detail_url %} {{ acs_session.tag }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">ACS Device</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_detail_url %} {{ acs_session.acs_device }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Client IP</th>
+                        <td>{{ acs_session.client_ip }} ({% if acs_session.client_ip_verified %}verified{% else %}not verified{% endif %})</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">ACS Session ID</th>
+                        <td>{{ acs_session.acs_session_id.hex }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Inform Event Codes</th>
+                        <td>{% for iec in acs_session.inform_eventcodes %}{{ iec }}<br>{% endfor %}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">ACS Session Result</th>
+                        <td>{{ acs_session.session_result|truefalseicon|safe }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">ACS Device Uptime</th>
+                        <td>{{ acs_session.device_uptime | datetimerange_as_pretty_delta }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>

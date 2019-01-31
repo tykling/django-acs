@@ -1,0 +1,47 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsDeviceModelList' headline=headline|default:"ACS Device Model List" %}
+        {% if acs_device_model_list %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ACS Device Model</th>
+                        <th>Name</th>
+                        <th>Vendor</th>
+                        <th>Category</th>
+                        <th>Desired Config Level</th>
+                        <th>Desired Software Version</th>
+                        <th>Devices</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acs_device_model in acs_device_model_list %}
+                    {% url 'acs_device_model_detail' pk=acs_device_model.id as acs_device_model_detail_url %}
+                    {% url 'acs_device_vendor_detail' pk=acs_device_model.vendor.id as acs_device_vendor_detail_url %}
+                    {% url 'acs_device_category_detail' pk=acs_device_model.category.id as acs_device_category_detail_url %}
+                    <tr>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_model_detail_url %}{{ acs_device_model.tag }}</td>
+                        <td>{{ acs_device_model.name }}</td>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_vendor_detail_url %}{{ acs_device_model.vendor }}</td>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_category_detail_url %}{{ acs_device_model.category }}</td>
+                        <td>{{ acs_device_model.desired_config_level|default:"N/A" }}</td>
+                        <td>{{ acs_device_model.desired_software_version|default:"N/A" }}</td>
+			<td><span class="badge">{{ acs_device_model.acsdevices.count }}</span></td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_device_model_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No Acs Device Models found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

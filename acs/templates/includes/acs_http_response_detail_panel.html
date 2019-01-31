@@ -1,0 +1,55 @@
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS HTTP Response Details for "|addstr:acs_http_response.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_http_response_detail' pk=acs_http_response.id as acs_http_response_detail_url %}
+                {% url 'acs_session_detail' pk=acs_http_response.http_request.acs_session.id as acs_session_detail_url %}
+                {% url 'acs_http_request_detail' pk=acs_http_response.http_request.id as http_request_detail_url %}
+                {% if acs_http_response.rpc_response_to %}
+                  {% url 'acs_http_request_detail' pk=acs_http_response.rpc_response_to.id as rpc_response_to_detail_url %}
+                {% endif %}
+                {% if acs_http_response.rpc_response %}
+                  {% url 'acs_http_request_detail' pk=acs_http_response.rpc_response.id as rpc_response_detail_url %}
+                {% endif %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS HTTP Response</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_http_response_detail_url %} {{ acs_http_response.tag }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">ACS Session</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_session_detail_url %} {{ acs_http_response.http_request.acs_session }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">When</th>
+                        <td>{{ acs_http_response.created_date }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">RPC Method</th>
+                        <td>{{ acs_http_response.cwmp_rpc_method }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">HTTP Response Body</th>
+                        <td>{% if acs_http_response.body %}<pre>{{ acs_http_response.body|prettyprintxml }}</pre>{% else %}(empty body){% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">RPC Response To</th>
+                        <td>{% include 'includes/small-details-button.html' with url=rpc_response_to_detail_url %}{{ acs_http_response.rpc_response_to }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">RPC Response</th>
+                        <td>{% include 'includes/small-details-button.html' with url=rpc_response_detail_url %}{{ acs_http_response.rpc_response }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">HTTP Request</th>
+                        <td>{% include 'includes/small-details-button.html' with url=http_response_detail_url %}{{ acs_http_response.http_request }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>

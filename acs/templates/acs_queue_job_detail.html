@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+{% block head_title %}{{ object }}{% endblock head_title %}
+{% block content %}
+    {% include 'includes/acs_queue_job_detail_panel.html' with aqj=object %}
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsDeviceList' headline=headline|default:"ACS Device List" %}
+    {% if acs_device_list %}
+        {% if is_paginated %}
+            {% include 'includes/pagination-footer.html' %}
+        {% endif %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ACS Device</th>
+                    <th>Model</th>
+                    <th>Vendor</th>
+                    <th>Serial</th>
+                    <th>Related Device</th>
+                    <th>Inform</th>
+                    <th>Config Level</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for ad in acs_device_list %}
+                {% url 'acs_device_detail' pk=ad.id as acsdevice_detail_url %}
+                {% url 'acs_device_model_detail' pk=ad.model.id as acsdevicemodel_detail_url %}
+                {% url 'acs_device_vendor_detail' pk=ad.model.vendor.id as acsdevicvendor_detail_url %}
+                <tr>
+                    <td>{% include 'includes/small-details-button.html' with url=acsdevice_detail_url %}{{ ad.tag }}</td>
+        <td>{% include 'includes/small-details-button.html' with url=acsdevicemodel_detail_url %}{{ ad.model }}</td>
+        <td>{% include 'includes/small-details-button.html' with url=acsdevicevendor_detail_url %}{{ ad.model.vendor }}</td>
+                    <td>{{ ad.serial }}</td>
+        <td>{% if ad.get_related_device %}
+            {% include 'includes/small-details-button.html' with url=ad.get_related_device.get_absolute_url %}{{ ad.get_related_device }}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+                    <td>{{ ad.acs_latest_inform }}</td>
+                    <td>{{ ad.current_config_level }}{% if ad.desired_config_level %}<span class="danger">(desired: {{ ad.desired_config_level }})</span>{% endif %}</td>
+                    <td>
+                        {% include 'includes/details-button.html' with url=acsdevice_detail_url %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+            {% include 'includes/pagination-footer.html' %}
+        {% endif %}
+    {% else %}
+        <p>No acs devices found!</p>
+    {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

@@ -1,0 +1,46 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='WifiDeviceParametersList' headline=headline|default:"WiFi Device ACS Parameters Last Updated: "|addstr:acs_device.acs_parameters_time %}
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="search">Filter:</label>
+            <input type="text" class="form-control" id="search">
+          </div>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Writable</th>
+                    <th>Notification</th>
+                    <th>Access list</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for key, value in acs_device.acs_parameter_dict.items %}
+                <tr class="acsparameter">
+                    <td>{{ key }}</td>
+                    <td>{{ value.type }}</td>
+                    <td>{{ value.writable }}</td>
+                    <td>{{ value.notification }}</td>
+                    <td>{{ value.accesslist }}</td>
+                    <td>{{ value.value | linebreaksbr }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+
+        <script>
+        var $rows = $('tr.acsparameter');
+        $('#search').keyup(function() {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+            $rows.show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+        });
+        </script>
+
+        {% include 'includes/collapsable-panel-footer.html' %}

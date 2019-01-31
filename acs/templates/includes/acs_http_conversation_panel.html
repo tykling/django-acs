@@ -1,0 +1,94 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsHttpConversation' headline=headline|default:"ACS HTTP Conversation" %}
+        {% if acs_http_conversationlist %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Reqresp</th>
+                        <th>Direction</th>
+                        <th>When</th>
+                        <th>RPC Method</th>
+                        <th class='text-center'>Headers</th>
+                        <th class='text-center'>Body</th>
+                        <th>RPC Response To</th>
+                        <th>RPC Response</th>
+                        <th>ACS Queue Job</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acs_http in acs_http_conversationlist %}
+                    <tr>
+                        {% if acs_http.is_request %}
+                          {% url 'acs_http_request_detail' pk=acs_http.id as acs_http_detail_url %}
+                          {% if acs_http.rpc_response_to %}
+                            {% url 'acs_http_response_detail' pk=acs_http.rpc_response_to.id as response_to_detail_url %}
+                          {% endif %}
+                          {% if acs_http.rpc_response %}
+                            {% url 'acs_http_response_detail' pk=acs_http.rpc_response.id as rpc_response_detail_url %}
+                          {% endif %}
+                        {% else %}
+                          {% url 'acs_http_response_detail' pk=acs_http.id as acs_http_detail_url %}
+                          {% if acs_http.rpc_response_to %}
+                            {% url 'acs_http_request_detail' pk=acs_http.rpc_response_to.id as response_to_detail_url %}
+                          {% endif %}
+                          {% if acs_http.rpc_response %}
+                            {% url 'acs_http_request_detail' pk=acs_http.rpc_response.id as rpc_response_detail_url %}
+                          {% endif %}
+                          {% if acs_http.queuejob %}
+                            {% url 'acs_queue_job_detail' pk=acs_http.queuejob.id as queue_job_detail_url %}
+                          {% endif %}
+                        {% endif %}
+                        <td>
+                          {% include 'includes/small-details-button.html' with url=acs_http_detail_url %}{{ acs_http }}
+                        </td>
+                        <td>
+                          {% if acs_http.is_request %}
+                            <i class="fa fa-share" aria-hidden="true"></i> HTTP Request
+                          {% else %}
+                            <i class="fa fa-reply" aria-hidden="true"></i> HTTP response
+                          {% endif %}
+                        </td>
+                        <td>{{ acs_http.created_date }}</td>
+                        <td>{{ acs_http.cwmp_rpc_method }}</td>
+                        <td class='text-center'>{% if acs_http.is_request %}<span class="badge">{{ acs_http.request_headers|length }} bytes</span>{% else %}N/A{% endif %}</td>
+                        <td class='text-center'><span class="badge">{{ acs_http.body|length }} bytes</span></td>
+                        <td>
+                          {% if acs_http.rpc_response_to %}
+                            {% include 'includes/small-details-button.html' with url=response_to_detail_url %}{{ acs_http.rpc_response_to.tag }}
+                          {% else %}
+                            N/A
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if acs_http.rpc_response %}
+                            {% include 'includes/small-details-button.html' with url=rpc_response_detail_url %}{{ acs_http.rpc_response.tag }}
+                          {% else %}
+                            N/A
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if acs_http.queuejob %}
+                            {% include 'includes/small-details-button.html' with url=queue_job_detail_url %}{{ acs_http.queuejob.tag }}
+                          {% else %}
+                            N/A
+                          {% endif %}
+                        </td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_http_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No ACS HTTP Requests Found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

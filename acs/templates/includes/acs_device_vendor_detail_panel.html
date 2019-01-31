@@ -1,0 +1,28 @@
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS Device Vendor Details for "|addstr:acs_device_vendor.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_device_vendor_detail' pk=acs_device_vendor.id as acs_device_vendor_detail_url %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS Device Vendor</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_vendor_detail_url %} {{ acs_device_vendor.tag }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Name</th>
+                        <td>{{ acs_device_vendor.name }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">OUI</th>
+                        <td>{{ acs_device_vendor.oui }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>
+

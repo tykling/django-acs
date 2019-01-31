@@ -1,0 +1,40 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsDeviceVendorList' headline=headline|default:"ACS Device Vendor List" %}
+        {% if acs_device_vendor_list %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ACS Device Vendor</th>
+                        <th>Name</th>
+                        <th>MAC OUI</th>
+                        <th>Models</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acs_device_vendor in acs_device_vendor_list %}
+                    {% url 'acs_device_vendor_detail' pk=acs_device_vendor.id as acs_device_vendor_detail_url %}
+                    <tr>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_vendor_detail_url %}{{ acs_device_vendor }}</td>
+                        <td>{{ acs_device_vendor.name }}</td>
+                        <td>{{ acs_device_vendor.oui }}</td>
+			<td><span class="badge">{{ acs_device_vendor.acsdevicemodels.count }}</span></td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_device_vendor_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No Acs Device Vendors found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}
+

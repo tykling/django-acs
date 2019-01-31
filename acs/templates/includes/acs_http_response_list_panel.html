@@ -1,0 +1,66 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsHttpResponseList' headline=headline|default:"ACS HTTP Response List" %}
+        {% if acs_http_response_list %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ACS HTTP Response</th>
+                        <th>ACS Session</th>
+                        <th>HTTP Request</th>
+                        <th>When</th>
+                        <th>RPC Method</th>
+                        <th class='text-center'>Body</th>
+                        <th>RPC Response To</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acs_http_response in acs_http_response_list %}
+                    {% url 'acs_http_response_detail' pk=acs_http_response.id as acs_http_response_detail_url %}
+                    {% url 'acs_session_detail' pk=acs_http_response.http_request.acs_session.id as acs_session_detail_url %}
+                    {% url 'acs_http_request_detail' pk=acs_http_response.http_request.id as http_request_detail_url %}
+                    {% if acs_http_response.rpc_response_to %}
+                      {% url 'acs_http_request_detail' pk=acs_http_response.rpc_response_to.id as rpc_response_to_detail_url %}
+                    {% endif %}
+                    {% if acs_http_response.rpc_response %}
+                      {% url 'acs_http_request_detail' pk=acs_http_response.rpc_response.id as rpc_response_detail_url %}
+                    {% endif %}
+                    <tr>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_http_response_detail_url %}{{ acs_http_response }}</td>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_session_detail_url %}{{ acs_http_response.http_request.acs_session }}</td>
+                        <td>{% include 'includes/small-details-button.html' with url=http_request_detail_url %}{{ acs_http_response.http_request.tag }}</td>
+                        <td>{{ acs_http_response.created_date }}</td>
+                        <td>{{ acs_http_response.cwmp_rpc_method }}</td>
+                        <td class='text-center'><span class="badge">{{ acs_http_response.body|length }} bytes</span></td>
+                        <td>
+                            {% if acs_http_response.rpc_response_to %}
+                              {% include 'includes/small-details-button.html' with url=rpc_response_to_detail_url %}{{ acs_http_response.rpc_response_to.tag }}
+                            {% else %}
+                              N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if acs_http_response.rpc_response %}
+                              {% include 'includes/small-details-button.html' with url=rpc_response_detail_url %}{{ acs_http_response.rpc_response.tag }}
+                            {% else %}
+                              N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_http_response_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No ACS HTTP Responses Found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+{% block head_title %}{{ object }}{% endblock head_title %}
+{% block content %}
+    {% include 'includes/acs_device_detail_panel.html' with acs_device=object %}
+    {% include 'includes/acs_device_parameters_panel.html' with acs_device=object collapsed=True %}
+    {% include 'includes/acs_session_list_panel.html' with acs_device=object acs_session_list=object.acs_sessions.all|slice:"10" included=True %}
+    {% include 'includes/acs_queue_job_list_panel.html' with acs_queue_job_list=object.unprocessed_acs_queue_jobs.all headline="All unprocessed ACS queue jobs for this acs device" %}
+{% endblock content %}
+

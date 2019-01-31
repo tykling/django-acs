@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block head_title %}ACS Session List{% endblock head_title %}
+{% block content %}
+    {% include 'includes/acs_session_list_panel.html' with acs_session_list=object_list included=False %}
+{% endblock content %}

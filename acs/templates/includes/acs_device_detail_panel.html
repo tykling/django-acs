@@ -1,0 +1,66 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS Device Details for "|addstr:acs_device.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_device_detail' pk=acs_device.id as acs_device_detail_url %}
+                {% url 'acs_device_vendor_detail' pk=acs_device.model.vendor.id as acs_device_vendor_detail_url %}
+                {% url 'acs_device_model_detail' pk=acs_device.model.id as acs_device_model_detail_url %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS Device</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_detail_url %} {{ acs_device }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Vendor</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_vendor_detail_url %} {{ acs_device.model.vendor }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Model</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_type_detail_url %} {{ acs_device.model }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Serial</th>
+                        <td>{{ acs_device.serial }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Related Device</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device.get_related_device.get_absolute_url %}{{ acs_device.get_related_device }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Latest Inform</th>
+                        <td>{{ acs_device.acs_latest_inform | default:"N/A" }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Current Config Level</th>
+                        <td>{{ acs_device.current_config_level | default:"N/A" }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Desired Config Level</th>
+                        <td>{{ acs_device.get_desired_config_level | default:"N/A" }} {% if acs_device.desired_config_level %}(LOCAL OVERRIDE){% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Current Software Version</th>
+                        <td>{{ acs_device.current_software_version | default:"N/A" }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Desired Software Version</th>
+                        <td>{{ acs_device.get_desired_software_version | default:"N/A" }} {% if acs_device.desired_software_version %}(LOCAL OVERRIDE){% endif %}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <div class="panel">
+                    <div class="panel-body">
+                        {% url 'acs_queue_job_create' pk=acs_device.id as acs_queue_job_create_url %}
+                        <p>{% include 'includes/create-button.html' with url=acs_queue_job_create_url buttontext='Schedule ACS RPC Job' %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>
+

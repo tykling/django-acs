@@ -1,0 +1,42 @@
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS Device Model Details for "|addstr:acs_device_model.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_device_model_detail' pk=acs_device_model.id as acs_device_model_detail_url %}
+                {% url 'acs_device_vendor_detail' pk=acs_device_model.vendor.id as acs_device_vendor_detail_url %}
+                {% url 'acs_device_category_detail' pk=acs_device_model.category.id as acs_device_category_detail_url %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS Device Model</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_model_detail_url %} {{ acs_device_model.tag }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Name</th>
+                        <td>{{ acs_device_model.name }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Vendor</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_vendor_detail_url %} {{ acs_device_model.vendor }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Device Category</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_category_detail_url %} {{ acs_device_model.category }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Desired Config Level</th>
+                        <td>{{ acs_device_model.desired_config_level|default:"N/A" }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Desired Software Version</th>
+                        <td>{{ acs_device_model.desired_software_version|default:"N/A" }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>
+

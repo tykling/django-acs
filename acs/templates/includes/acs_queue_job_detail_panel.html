@@ -1,0 +1,61 @@
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS Queue Job Details for "|addstr:aqj.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_queue_job_detail' pk=aqj.id as acs_queue_job_detail_url %}
+                {% url 'acs_device_detail' pk=aqj.acs_device.id as acs_device_detail_url %}
+                {% if aqj.handled_in %}
+                  {% url 'acs_http_response_detail' pk=aqj.handled_in.id as handled_in_detail_url %}
+                {% endif %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS Queue Job</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_queue_job_detail_url %} {{ aqj.tag }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">ACS Device</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acsdevice_detail_url %} {{ aqj.acs_device }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">RPC Method</th>
+                        <td>{{ aqj.cwmp_rpc_method }}</td>
+                    </tr>
+                    {% if aqj.handled_in %}
+                    <tr>
+                        <th style="text-align: right">Handled in HTTP Response</th>
+                        <td>{% include 'includes/small-details-button.html' with url=handled_in_detail_url %}{{ aqj.handled_in }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th style="text-align: right">Processed</th>
+                        <td>{{ aqj.processed|truefalseicon|safe }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Reason</th>
+                        <td>{{ aqj.reason }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Automatic?</th>
+                        <td>{{ aqj.automatic|truefalseicon|safe }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Urgent?</th>
+                        <td>{{ aqj.urgent|truefalseicon|safe }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Notification Sent?</th>
+                        <td>{{ aqj.notification_sent|truefalseicon|safe }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">XML</th>
+                        <td><pre>{{ aqj.cwmp_rpc_object_xml|prettyprintxml }}</pre></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>

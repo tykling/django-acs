@@ -1,0 +1,37 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsDeviceCategoryList' headline=headline|default:"ACS Device Category List" %}
+        {% if acs_device_category_list %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ACS Device Category</th>
+                        <th>Name</th>
+                        <th>Models</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for acs_device_category in acs_device_category_list %}
+                    {% url 'acs_device_category_detail' pk=acs_device_category.id as acs_device_category_detail_url %}
+                    <tr>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_category_detail_url %}{{ acs_device_category.tag }}</td>
+                        <td>{{ acs_device_category.name }}</td>
+			<td><span class="badge">{{ acs_device_category.acsdevicemodels.count }}</span></td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_device_category_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No Acs Device Categories found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

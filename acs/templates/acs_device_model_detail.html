@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+{% block head_title %}{{ object }}{% endblock head_title %}
+{% block content %}
+    {% include 'includes/acs_device_model_detail_panel.html' with acs_device_model=object %}
+    {% include 'includes/acs_device_list_panel.html' with acs_device_list=object.acsdevices.all headline='ACS Devices of This Model' %}
+{% endblock content %}

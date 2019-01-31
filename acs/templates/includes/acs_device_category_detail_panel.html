@@ -1,0 +1,24 @@
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+<div class="panel panel-info">
+    <div class="panel-heading"><h4>{{ headline|default:"ACS Device Category Details for "|addstr:acs_device_category.tag }}</h4></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-9">
+                {% url 'acs_device_category_detail' pk=acs_device_category.id as acs_device_category_detail_url %}
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="text-align: right">ACS Device Category</th>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_device_category_detail_url %} {{ acs_device_category.tag }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Name</th>
+                        <td>{{ acs_device_category.name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/detail_panel_footer.html' %}
+</div>
+

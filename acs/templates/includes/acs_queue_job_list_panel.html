@@ -1,0 +1,63 @@
+{% load mrx_custom_template_tags %}
+{% load mrx_custom_template_filters %}
+{% include 'includes/collapsable-panel-header.html' with name='AcsQueueJobList' headline=headline|default:"ACS Queue Job List" %}
+        {% if acs_queue_job_list %}
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ACS Queue Job</th>
+                        <th>ACS Device</th>
+                        <th>Created</th>
+                        <th>RPC Method</th>
+                        <th>Handled In</th>
+                        <th>Processed</th>
+                        <th>Reason</th>
+                        <th>Automatic?</th>
+                        <th>Urgent?</th>
+                        <th>Notification Sent?</th>
+                        <th>XML</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for aqj in acs_queue_job_list %}
+                    {% url 'acs_queue_job_detail' pk=aqj.id as acs_queue_job_detail_url %}
+                    {% url 'acs_device_detail' pk=aqj.acs_device.id as acsdevice_detail_url %}
+                    {% if aqj.handled_in %}
+                      {% url 'acs_http_response_detail' pk=aqj.handled_in.id as handled_in_detail_url %}
+                    {% endif %}
+                    <tr>
+                        <td>{% include 'includes/small-details-button.html' with url=acs_queue_job_detail_url %}{{ aqj.tag }}</td>
+                        <td>{% include 'includes/small-details-button.html' with url=acsdevice_detail_url %}{{ aqj.acs_device.tag }}</td>
+                        <td>{{ aqj.created_date }}</td>
+                        <td>{{ aqj.cwmp_rpc_method }}</td>
+                        <td>
+                          {% if aqj.handled_in %}
+                            {% include 'includes/small-details-button.html' with url=handled_in_detail_url %}{{ aqj.handled_in }}
+                          {% else %}
+                            N/A
+                          {% endif %}
+                        </td>
+                        <td>{{ aqj.processed|truefalseicon|safe }}</td>
+                        <td>{{ aqj.reason }}</td>
+                        <td>{{ aqj.automatic|truefalseicon|safe }}</td>
+                        <td>{{ aqj.urgent|truefalseicon|safe }}</td>
+                        <td>{{ aqj.notification_sent|truefalseicon|safe }}</td>
+                        <td>{{ aqj.cwmp_rpc_object_xml|length }} bytes</td>
+                        <td>
+                            {% include 'includes/details-button.html' with url=acs_queue_job_detail_url %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if is_paginated %}
+                {% include 'includes/pagination-footer.html' %}
+            {% endif %}
+        {% else %}
+            <p>No Acs Queue Jobs found!</p>
+        {% endif %}
+{% include 'includes/collapsable-panel-footer.html' %}

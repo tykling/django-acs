@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load mrx_custom_template_filters %}
+{% load mrx_custom_template_tags %}
+{% block head_title %}{{ object }}{% endblock head_title %}
+{% block content %}
+    {% include 'includes/acs_session_detail_panel.html' with acs_session=object %}
+    {% include 'includes/acs_http_conversation_panel.html' with acs_http_conversationlist=object.acs_http_conversationlist headline='ACS Session HTTP Conversation' %}
+    {% include 'includes/acs_http_request_list_panel.html' with acs_http_request_list=object.acs_http_requests.all headline='ACS HTTP Requests in This ACS Session' collapsed=True %}
+    {% include 'includes/acs_http_response_list_panel.html' with acs_http_response_list=object.acs_http_responses.all headline='ACS HTTP Responses in This ACS Session' collapsed=True %}
+{% endblock content %}

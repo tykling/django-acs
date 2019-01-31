@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block head_title %}ACS Devices{% endblock head_title %}
+{% block content %}
+    {% include 'includes/acs_device_list_panel.html' with acs_device_list=object_list %}
+{% endblock content %}
