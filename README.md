@@ -1,6 +1,8 @@
 # django-acs
 Django ACS Server
 
+THIS IS VERY MUCH A WORK IN PROGRESS. EXPECT NOTHING TO WORK UNTIL I GET SOME MORE STUFF DONE.
+
 # Settings
 
 ## XML storage
