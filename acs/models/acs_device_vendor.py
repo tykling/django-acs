@@ -1,5 +1,6 @@
 from acs.models import AcsBaseModel
 from django.urls import reverse
+from django.db import models
 
 
 class AcsDeviceVendor(AcsBaseModel):

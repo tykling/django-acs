@@ -7,6 +7,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.fields import DateTimeRangeField
 from django.utils import timezone
 from django.conf import settings
+from django.db import models
 
 from acs.models import AcsHttpResponse, AcsQueueJob
 from acs.utils import *

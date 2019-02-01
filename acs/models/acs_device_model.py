@@ -2,6 +2,7 @@ from acs.models import AcsBaseModel
 from django.urls import reverse
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
+from django.db import models
 
 
 class AcsDeviceModel(AcsBaseModel):

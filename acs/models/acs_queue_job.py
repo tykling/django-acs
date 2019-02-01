@@ -1,5 +1,6 @@
 from acs.models import AcsBaseModel
 from django.urls import reverse
+from django.db import models
 from lxml import etree
 from defusedxml.lxml import fromstring
 
