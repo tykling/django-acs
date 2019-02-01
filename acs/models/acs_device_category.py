@@ -1,10 +1,9 @@
-
+from acs.models import AcsBaseModel
 from django.db import models
 from django.urls import reverse
-from mrxcore.models import BaseModel
 
 
-class AcsDeviceCategory(BaseModel):
+class AcsDeviceCategory(AcsBaseModel):
     """ The category of an ACS device model. Used to determine what to do with the device. """
     WIFI = "WIFI"
     SETTOPBOX = "SETTOPBOX"

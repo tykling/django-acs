@@ -1,10 +1,8 @@
-
-from django.db import models
+from acs.models import AcsBaseModel
 from django.urls import reverse
-from mrxcore.models import BaseModel
 
 
-class AcsDeviceVendor(BaseModel):
+class AcsDeviceVendor(AcsBaseModel):
     name = models.CharField(max_length=100)
     oui = models.CharField(max_length=6)
 

@@ -1,8 +1,8 @@
 
-from mrxcore.models import BaseModel
+from acs.models import AcsBaseModel
 
 
-class AcsDeviceBaseModel(BaseModel):
+class AcsDeviceBaseModel(AcsBaseModel):
     class Meta:
         abstract = True
 

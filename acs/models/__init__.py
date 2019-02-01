@@ -1,3 +1,4 @@
+from .acs_basemodel import AcsBaseModel
 from .acs_device_basemodel import AcsDeviceBaseModel
 from .acs_device_category import AcsDeviceCategory
 from .acs_device_model import AcsDeviceModel

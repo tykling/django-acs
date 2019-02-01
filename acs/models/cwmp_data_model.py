@@ -1,11 +1,9 @@
-
-from django.db import models
+from acs.models import AcsBaseModel
 from django.urls import reverse
-from mrxcore.models import BaseModel
 from django.conf import settings
 
 
-class CwmpDataModel(BaseModel):
+class CwmpDataModel(AcsBaseModel):
     name = models.TextField()
     xml_filename = models.TextField(blank=True)
     html_link = models.TextField(blank=True)

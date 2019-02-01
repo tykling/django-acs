@@ -1,7 +1,7 @@
 from datetime import timedelta
 import uuid, logging
 
-from django.db import models
+from acs.models import AcsBaseModel
 from django.urls import reverse
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.fields import DateTimeRangeField
@@ -11,11 +11,10 @@ from django.conf import settings
 from acs.models import AcsHttpResponse, AcsQueueJob
 from acs.utils import *
 from acs.response import get_soap_xml_object
-from mrxcore.models import BaseModel
 
 logger = logging.getLogger('django_acs.%s' % __name__)
 
-class AcsSession(BaseModel):
+class AcsSession(AcsBaseModel):
     """ An ACSSession model instance represents a single ACS session with
         an ACS device. Every HTTP request and HTTP response in that session
         is linked to the ACS session. The reference field can be used to record

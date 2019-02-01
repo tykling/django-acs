@@ -1,12 +1,10 @@
-
-from django.db import models
+from acs.models import AcsBaseModel
 from django.urls import reverse
-from mrxcore.models import BaseModel
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 
 
-class AcsDeviceModel(BaseModel):
+class AcsDeviceModel(AcsBaseModel):
     vendor = models.ForeignKey('acs.AcsDeviceVendor', related_name='acsdevicemodels', on_delete=models.PROTECT)
     category = models.ForeignKey('acs.AcsDeviceCategory', related_name='acsdevicemodels', default=1, on_delete=models.PROTECT)
     name = models.CharField(max_length=50)

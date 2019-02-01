@@ -1,12 +1,11 @@
-
 from django.db import models
 from django.conf import settings
 from django.utils.functional import cached_property
-from mrxcore.models import BaseModel
+from acs.models import AcsBaseModel
 from defusedxml.lxml import fromstring
 
 
-class AcsHttpBaseModel(BaseModel):
+class AcsHttpBaseModel(AcsBaseModel):
     """ 
         This abstract model is used for the AcsHttpRequest and
         AcsHttpResponse models. It contains the common fields and

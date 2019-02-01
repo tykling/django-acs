@@ -1,12 +1,10 @@
-
-from django.db import models
+from acs.models import AcsBaseModel
 from django.urls import reverse
-from mrxcore.models import BaseModel
 from lxml import etree
 from defusedxml.lxml import fromstring
 
 
-class AcsQueueJob(BaseModel):
+class AcsQueueJob(AcsBaseModel):
     cwmp_rpc_object_xml = models.TextField()
     acs_device = models.ForeignKey('acs.AcsDevice', null=True, blank=True, related_name='acs_queue_jobs', on_delete=models.PROTECT)
     reason = models.CharField(max_length=200)
