@@ -297,7 +297,7 @@ class AcsServerView(View):
                     parameterlist = inform.find('ParameterList')
 
                     ### update current_config_level from Device.ManagementServer.ParameterKey
-                    parameterkey = get_value_from_parameterlist(parameterlist, acs_session.get_acs_parameter_name('mrx.acs.parameterkey'))
+                    parameterkey = get_value_from_parameterlist(parameterlist, acs_session.get_acs_parameter_name('django_acs.acs.parameterkey'))
                     if not parameterkey:
                         acs_device.current_config_level = None
                     else:
@@ -307,7 +307,7 @@ class AcsServerView(View):
                     acs_device.acs_latest_inform = timezone.now()
 
                     ### update current_software_version
-                    acs_device.current_software_version = get_value_from_parameterlist(parameterlist, acs_session.get_acs_parameter_name('mrx.deviceinfo.softwareversion'))
+                    acs_device.current_software_version = get_value_from_parameterlist(parameterlist, acs_session.get_acs_parameter_name('django_acs.deviceinfo.softwareversion'))
 
                     ### save acs device
                     acs_device.save()
