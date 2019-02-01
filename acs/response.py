@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import MultipleObjectsReturned
 
-logger = logging.getLogger('mrx.%s' % __name__)
+logger = logging.getLogger('django_acs.%s' % __name__)
 
 
 def add_parameter_names(soapobject, parameterlist):

@@ -3,7 +3,7 @@ import logging
 from django.utils import timezone
 from acs.models import AcsQueueJob
 
-logger = logging.getLogger('mrx.%s' % __name__)
+logger = logging.getLogger('django_acs.%s' % __name__)
 
 def do_work():
     """

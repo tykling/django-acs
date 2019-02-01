@@ -6,13 +6,7 @@ import sys, sleekxmpp
 from django.conf import settings
 import logging
 
-logger = logging.getLogger('mrx.%s' % __name__)
-
-if sys.version_info < (3, 0):
-    reload(sys)
-    sys.setdefaultencoding('utf8')
-else:
-    raw_input = input
+logger = logging.getLogger('django_acs.%s' % __name__)
 
 class Command(BaseCommand):
     args = 'none'

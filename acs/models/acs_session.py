@@ -13,7 +13,7 @@ from acs.utils import *
 from acs.response import get_soap_xml_object
 from mrxcore.models import BaseModel
 
-logger = logging.getLogger('mrx.%s' % __name__)
+logger = logging.getLogger('django_acs.%s' % __name__)
 
 class AcsSession(BaseModel):
     """ An ACSSession model instance represents a single ACS session with
