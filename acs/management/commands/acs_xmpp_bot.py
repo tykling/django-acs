@@ -12,14 +12,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         ### Initiate logging
         logging.basicConfig(level=logging.DEBUG, format='%(levelname)-8s %(message)s')
-        
-        ### create MrxAcsXmppBot instance
-        xmpp = MrxAcsXmppBot(settings.ACS_XMPP_JABBERID, settings.ACS_XMPP_PASSWORD)
+
+        ### create AcsXmppBot instance
+        xmpp = AcsXmppBot(settings.ACS_XMPP_JABBERID, settings.ACS_XMPP_PASSWORD)
         xmpp.connect(address=settings.ACS_XMPP_SERVERTUPLE)
         xmpp.process(block=True)
 
 
-class MrxAcsXmppBot(ClientXMPP):
+class AcsXmppBot(ClientXMPP):
     def __init__(self, jid, password):
         ClientXMPP.__init__(self, jid, password)
         self.add_event_handler("session_start", self.session_start)
@@ -28,7 +28,6 @@ class MrxAcsXmppBot(ClientXMPP):
     def session_start(self, event):
         self.send_presence()
         self.get_roster()
-        
 
     def message(self, msg):
         if msg['type'] in ('chat', 'normal'):
