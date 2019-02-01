@@ -185,7 +185,7 @@ class AcsDevice(AcsBaseModel):
                 attribs.append(attrib)
             attributedict[child.xpath("Name")[0].text] = attribs
 
-        root = etree.Element("MrxAcsValues")
+        root = etree.Element("DjangoAcsParameterCache")
         ### loop through all params in valuesrequest
         paramcount = 0
         for param in values_rpc_response.soap_body.find('cwmp:GetParameterValuesResponse', acs_session.soap_namespaces).find('ParameterList').getchildren():
