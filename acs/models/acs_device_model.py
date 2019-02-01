@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.db import models
-
+from acs.default_acs_parametermap import default_acs_device_parametermap
 
 class AcsDeviceModel(AcsBaseModel):
     vendor = models.ForeignKey('acs.AcsDeviceVendor', related_name='acsdevicemodels', on_delete=models.PROTECT)
@@ -21,11 +21,10 @@ class AcsDeviceModel(AcsBaseModel):
 
     @property
     def acs_parameter_map(self):
-        # return the default acs_parameter_map with overrides for this device
-        parametermap = settings.DEFAULT_ACS_DEVICE_PARAMETER_MAP
+        # return the default_acs_device_parametermap with the overrides for this specific device
         if self.acs_parameter_map_overrides:
-            parametermap.update(self.acs_parameter_map_overrides)
-        return parametermap
+            default_acs_device_parametermap.update(self.acs_parameter_map_overrides)
+        return default_acs_device_parametermap
 
     def get_active_notification_parameterlist(self, root_object):
         """

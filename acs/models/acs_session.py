@@ -12,6 +12,7 @@ from django.db import models
 from acs.models import AcsHttpResponse, AcsQueueJob
 from acs.utils import *
 from acs.response import get_soap_xml_object
+from acs.default_acs_parametermap import default_acs_device_parametermap
 
 logger = logging.getLogger('django_acs.%s' % __name__)
 
@@ -137,26 +138,26 @@ class AcsSession(AcsBaseModel):
         configdict = {}
 
         # set InformInterval to 2 hours
-        configdict['mrx.acs.informinterval'] = 7200
+        configdict['django_acs.acs.informinterval'] = 7200
 
         # enable ACS managed firmware upgrades (disables manufacturer/provider upgrades)
-        configdict['mrx.acs.acs_managed_upgrades'] = True
+        configdict['django_acs.acs.acs_managed_upgrades'] = True
 
         # add acs client xmpp settings (only if we have an xmpp account for this device)
         if self.acs_device.acs_xmpp_password:
-            configdict['mrx.acs.xmpp_server'] = settings.ACS_XMPP_SERVERTUPLE[0]
-            configdict['mrx.acs.xmpp_server_port'] = settings.ACS_XMPP_SERVERTUPLE[1]
-            configdict['mrx.acs.xmpp_connection_enable'] = True
-            configdict['mrx.acs.xmpp_connection_username'] = self.acs_device.acs_xmpp_username
-            configdict['mrx.acs.xmpp_connection_password'] = self.acs_device.acs_xmpp_password
-            configdict['mrx.acs.xmpp_connection_domain'] = settings.ACS_XMPP_DOMAIN # all ACS clients connect to the same XMPP server domain for now
-            configdict['mrx.acs.xmpp_connection_usetls'] = True
-            configdict['mrx.acs.xmpp_connreq_connection'] = '%s.XMPP.Connection.1.' % self.root_data_model.root_object
+            configdict['django_acs.acs.xmpp_server'] = settings.ACS_XMPP_SERVERTUPLE[0]
+            configdict['django_acs.acs.xmpp_server_port'] = settings.ACS_XMPP_SERVERTUPLE[1]
+            configdict['django_acs.acs.xmpp_connection_enable'] = True
+            configdict['django_acs.acs.xmpp_connection_username'] = self.acs_device.acs_xmpp_username
+            configdict['django_acs.acs.xmpp_connection_password'] = self.acs_device.acs_xmpp_password
+            configdict['django_acs.acs.xmpp_connection_domain'] = settings.ACS_XMPP_DOMAIN # all ACS clients connect to the same XMPP server domain for now
+            configdict['django_acs.acs.xmpp_connection_usetls'] = True
+            configdict['django_acs.acs.xmpp_connreq_connection'] = '%s.XMPP.Connection.1.' % self.root_data_model.root_object
 
         # set connectionrequest credentials?
         if self.acs_device.acs_connectionrequest_username:
-            configdict['mrx.acs.connection_request_user'] = self.acs_device.acs_connectionrequest_username
-            configdict['mrx.acs.connection_request_password'] = self.acs_device.acs_connectionrequest_password
+            configdict['django_acs.acs.connection_request_user'] = self.acs_device.acs_connectionrequest_username
+            configdict['django_acs.acs.connection_request_password'] = self.acs_device.acs_connectionrequest_password
 
         # get device specific config from the related device and add it to the configdict
         if self.acs_device.get_related_device():
@@ -307,13 +308,13 @@ class AcsSession(AcsBaseModel):
 
     def get_acs_parameter_name(self, parametername):
         """
-        Converts something like mrx.acs.parameterkey to Device.ManagementServer.ParameterKey based on the root_data_model in use in this session.
+        Converts something like django_acs.acs.parameterkey to Device.ManagementServer.ParameterKey based on the root_data_model in use in this session.
         """
         # TODO: Does not currently support device overrides!
         if not self.root_data_model:
             return False
         root_object = self.root_data_model.root_object
-        element = settings.DEFAULT_ACS_DEVICE_PARAMETER_MAP[parametername]
+        element = default_acs_device_parametermap[parametername]
         return "%s.%s" % (root_object, element)
 
     def get_inform_eventcodes(self, inform, acshttprequest):
@@ -439,7 +440,7 @@ class AcsSession(AcsBaseModel):
         """
         if not self.acs_device:
             return False
-        uptime_seconds = self.acs_device.acs_get_parameter_value(self.get_acs_parameter_name('mrx.deviceinfo.uptime'))
+        uptime_seconds = self.acs_device.acs_get_parameter_value(self.get_acs_parameter_name('django_acs.deviceinfo.uptime'))
         if uptime_seconds:
             self._device_uptime = (timezone.now()-timedelta(seconds=int(uptime_seconds)), timezone.now())
             self.save()
