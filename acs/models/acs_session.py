@@ -36,7 +36,7 @@ class AcsSession(AcsBaseModel):
 
     class Meta:
         ordering = ['-created_date']
-        unique_together = (('acs_session_id', 'client_ip', 'active'),)
+        unique_together = (('acs_session_id', 'client_ip'),)
 
     def __str__(self):
         return str('%s (%s)' % (self.tag, self.hexid))

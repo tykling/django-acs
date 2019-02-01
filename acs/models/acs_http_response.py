@@ -5,12 +5,10 @@ from acs.models import AcsHttpBaseModel
 
 class AcsHttpResponse(AcsHttpBaseModel):
     """ Every HTTP response given by the ACS server is saved as an instance of this model. """
-    http_request = models.ForeignKey('acs.AcsHttpRequest', related_name='acs_http_responses', on_delete=models.PROTECT) # a foreignkey to the http request which triggered this http response
+    http_request = models.ForeignKey('acs.AcsHttpRequest', related_name='acs_http_responses', unique=True, on_delete=models.PROTECT) # a foreignkey to the http request which triggered this http response
     rpc_response_to = models.ForeignKey('acs.AcsHttpRequest', related_name='rpc_responses', null=True, blank=True, on_delete=models.PROTECT) # a foreignkey to the http request containing the acs rpc request which triggered the current http response (where relevant)
 
     class Meta:
-        ### make sure we only ever have one active http response pointing to a specific http request
-        unique_together = ('http_request', 'active')
         ordering = ['-created_date']
 
     def __str__(self):

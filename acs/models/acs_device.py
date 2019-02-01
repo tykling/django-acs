@@ -36,7 +36,7 @@ class AcsDevice(AcsBaseModel):
 
     class Meta:
         # make sure we only ever have one device of a given model with a given serial number
-        unique_together=('serial', 'model', 'active')
+        unique_together=('serial', 'model')
 
     def __str__(self):
         return str(self.tag)

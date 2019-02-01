@@ -15,11 +15,7 @@ class AcsDeviceCategory(AcsBaseModel):
         (SETTOPBOX, 'Settop Box')
     )
 
-    name = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default=UNKNOWN)
-
-    class Meta:
-        ### make sure the category name is unique
-        unique_together = ('name', 'active')
+    name = models.CharField(max_length=100, choices=CATEGORY_CHOICES, default=UNKNOWN, unique=True)
 
     def __str__(self):
         return str("%s - %s" % (self.tag, self.name))
