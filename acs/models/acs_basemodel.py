@@ -7,3 +7,7 @@ class AcsBaseModel(models.Model):
     class Meta:
         abstract = True
 
+    @property
+    def tag(self):
+        return "%s#%s" % (self.__class__.__name__, self.pk)
+
