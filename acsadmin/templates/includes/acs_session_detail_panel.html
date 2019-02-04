@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th style="text-align: right">ACS Device Uptime</th>
-                        <td>{{ acs_session.device_uptime }}</td>
+                        <td>{{ acs_session.device_uptime | datetimerange_as_pretty_delta }}</td>
                     </tr>
                 </table>
             </div>
