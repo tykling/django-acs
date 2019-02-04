@@ -1,6 +1,6 @@
 from django.urls import path
 
-import acs.views
+import acsadmin.views
 
 urlpatterns = [
     path('http/requests/', acsadmin.views.AcsHttpRequestList.as_view(), name='acs_http_request_list'),
