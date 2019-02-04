@@ -1,5 +1,6 @@
 from datetime import timedelta
 import uuid, logging
+from psycopg2.extras import DateTimeTZRange
 
 from acs.models import AcsBaseModel
 from django.urls import reverse
@@ -443,7 +444,7 @@ class AcsSession(AcsBaseModel):
         uptime_seconds = self.acs_device.acs_get_parameter_value(self.get_acs_parameter_name('django_acs.deviceinfo.uptime'))
         if not uptime_seconds:
             return False
-        self._device_uptime = (timezone.now()-timedelta(seconds=int(uptime_seconds)), timezone.now())
+        self._device_uptime = DateTimeTZRange(timezone.now()-timedelta(seconds=int(uptime_seconds)), timezone.now())
         self.save()
         return self._device_uptime
 
