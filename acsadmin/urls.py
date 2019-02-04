@@ -2,6 +2,8 @@ from django.urls import path
 
 import acsadmin.views
 
+app_name = 'acsadmin'
+
 urlpatterns = [
     path('http/requests/', acsadmin.views.AcsHttpRequestList.as_view(), name='acs_http_request_list'),
     path('http/requests/<int:pk>/', acsadmin.views.AcsHttpRequestDetail.as_view(), name='acs_http_request_detail'),
