@@ -1,0 +1,5 @@
+include LICENSE
+include README.rst
+recursive-include acsadmin/templates *
+recursive-include docs *
+

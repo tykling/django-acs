@@ -1,5 +1,0 @@
-include LICENSE
-include README.rst
-recursive-include acs/templates *
-recursive-include acs/docs *
-
