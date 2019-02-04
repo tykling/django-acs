@@ -1,4 +1,5 @@
 from datetime import timedelta
+from defusedxml.lxml import fromstring, etree
 
 from django import template
 
@@ -31,4 +32,17 @@ def addstr(arg1, arg2):
 @register.filter
 def prettyprintjson(jsondata):
     return json.dumps(json.loads(jsondata), indent=4) if jsondata else 'N/A'
+
+@register.filter
+def prettyprintxml(xml):
+    '''
+    This assumes too much about encoding and stuff.
+    Should be possible to prettyprint without changing the xml at all.
+    '''
+    return etree.tostring(
+        fromstring(xml.encode('utf-8')),
+        pretty_print=True,
+        xml_declaration=True,
+        encoding='utf-8',
+    ).decode('utf-8')
 
