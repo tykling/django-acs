@@ -48,7 +48,7 @@
                         <td><span class="badge">{{ acs_session.acs_http_responses.count }}</span></td>
                         <td>{{ acs_session.start }}</td>
                         <td>{{ acs_session.duration | pretty_timedelta }}</td>
-                        <td>{{ acs_session.device_uptime | datetimerange_as_pretty_delta }}</td>
+                        <td>{{ acs_session.device_uptime }}</td>
                         <td>{{ acs_session.get_latest_rpc_method }}</td>
                         <td><span class="badge">{{ acs_session.bytes_in }} bytes</span></td>
                         <td><span class="badge">{{ acs_session.bytes_out }} bytes</span></td>
