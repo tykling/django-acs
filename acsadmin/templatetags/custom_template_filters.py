@@ -1,5 +1,6 @@
 from datetime import timedelta
-from defusedxml.lxml import fromstring, etree
+from defusedxml.lxml import fromstring
+from lxml import etree
 
 from django import template
 
