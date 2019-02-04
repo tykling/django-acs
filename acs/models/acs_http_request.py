@@ -29,14 +29,6 @@ class AcsHttpRequest(AcsHttpBaseModel):
         return reverse('acshttprequest_detail', kwargs={'pk': self.pk})
 
     @property
-    def acs_http_response(self):
-        #return self.acs_http_responses.first()
-        try:
-            return self.acs_http_responses.get()
-        except ObjectDoesNotExist:
-            return False
-
-    @property
     def is_request(self):
         return True
 

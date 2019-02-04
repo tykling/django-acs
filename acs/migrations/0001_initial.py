@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
                 ('cwmp_id', models.CharField(blank=True, max_length=100)),
                 ('cwmp_rpc_method', models.CharField(blank=True, max_length=100)),
                 ('fk_body', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='xmlarchive.XMLDocument')),
-                ('http_request', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='acs_http_responses', to='acs.AcsHttpRequest', unique=True)),
+                ('http_request', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='acs_http_response', to='acs.AcsHttpRequest', unique=True)),
                 ('rpc_response_to', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='rpc_responses', to='acs.AcsHttpRequest')),
             ],
             options={

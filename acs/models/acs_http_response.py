@@ -5,7 +5,7 @@ from acs.models import AcsHttpBaseModel
 
 class AcsHttpResponse(AcsHttpBaseModel):
     """ Every HTTP response given by the ACS server is saved as an instance of this model. """
-    http_request = models.OneToOneField('acs.AcsHttpRequest', related_name='acs_http_responses', unique=True, on_delete=models.PROTECT) # a foreignkey to the http request which triggered this http response
+    http_request = models.OneToOneField('acs.AcsHttpRequest', related_name='acs_http_response', unique=True, on_delete=models.PROTECT) # a foreignkey to the http request which triggered this http response
     rpc_response_to = models.ForeignKey('acs.AcsHttpRequest', related_name='rpc_responses', null=True, blank=True, on_delete=models.PROTECT) # a foreignkey to the http request containing the acs rpc request which triggered the current http response (where relevant)
 
     class Meta:
