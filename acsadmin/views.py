@@ -1,28 +1,13 @@
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.views.generic import View, ListView, DetailView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
-from django.conf import settings
-from django.utils import timezone
-from ipware.ip import get_ip
-from lxml import etree
-from mrxcore.views import MrxGroupRequiredMixin
-from django.utils.dateparse import parse_datetime
-from defusedxml.lxml import fromstring
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib import messages
-from django.views.generic.detail import SingleObjectMixin
-from datetime import timedelta
-import json, uuid
+from django.shortcuts import get_object_or_404
+
 from xmlarchive.utils import create_xml_document
-from .models import *
-from .utils import get_value_from_parameterlist
-from .response import nse, get_soap_envelope
+from acs.models import *
 from .forms import AcsDeviceActionForm
 
 
-class AcsQueueJobList(MrxGroupRequiredMixin, ListView):
+class AcsQueueJobList(ListView):
     model = AcsQueueJob
     template_name = 'acs_queue_job_list.html'
     paginate_by = 25
@@ -34,12 +19,12 @@ class AcsQueueJobList(MrxGroupRequiredMixin, ListView):
         return queryset
 
 
-class AcsQueueJobDetail(MrxGroupRequiredMixin, DetailView):
+class AcsQueueJobDetail(DetailView):
     model = AcsQueueJob
     template_name = 'acs_queue_job_detail.html'
 
 
-class AcsQueueJobCreate(MrxGroupRequiredMixin, CreateView):
+class AcsQueueJobCreate(CreateView):
     model = AcsQueueJob
     template_name = 'acs_queue_job_create.html'
     fields = ['cwmp_rpc_object_xml', 'reason', 'urgent']
@@ -57,7 +42,7 @@ class AcsQueueJobCreate(MrxGroupRequiredMixin, CreateView):
         return(super().form_valid(form))
 
 
-class AcsSessionList(MrxGroupRequiredMixin, ListView):
+class AcsSessionList(ListView):
     model = AcsSession
     template_name = 'acs_session_list.html'
     paginate_by = 25
@@ -72,78 +57,78 @@ class AcsSessionList(MrxGroupRequiredMixin, ListView):
         return queryset
 
 
-class AcsSessionDetail(MrxGroupRequiredMixin, DetailView):
+class AcsSessionDetail(DetailView):
     model = AcsSession
     template_name = 'acs_session_detail.html'
 
 
-class AcsHttpRequestList(MrxGroupRequiredMixin, ListView):
+class AcsHttpRequestList(ListView):
     model = AcsHttpRequest
     template_name = 'acs_http_request_list.html'
     paginate_by = 25
 
 
-class AcsHttpRequestDetail(MrxGroupRequiredMixin, DetailView):
+class AcsHttpRequestDetail(DetailView):
     model = AcsHttpRequest
     template_name = 'acs_http_request_detail.html'
 
 
-class AcsHttpResponseList(MrxGroupRequiredMixin, ListView):
+class AcsHttpResponseList(ListView):
     model = AcsHttpResponse
     template_name = 'acs_http_response_list.html'
     paginate_by = 25
 
 
-class AcsHttpResponseDetail(MrxGroupRequiredMixin, DetailView):
+class AcsHttpResponseDetail(DetailView):
     model = AcsHttpResponse
     template_name = 'acs_http_response_detail.html'
 
 
-class AcsDeviceModelList(MrxGroupRequiredMixin, ListView):
+class AcsDeviceModelList(ListView):
     model = AcsDeviceModel
     template_name = 'acs_device_model_list.html'
     paginate_by = 25
 
 
-class AcsDeviceModelDetail(MrxGroupRequiredMixin, DetailView):
+class AcsDeviceModelDetail(DetailView):
     model = AcsDeviceModel
     template_name = 'acs_device_model_detail.html'
 
 
-class AcsDeviceCategoryList(MrxGroupRequiredMixin, ListView):
+class AcsDeviceCategoryList(ListView):
     model = AcsDeviceCategory
     template_name = 'acs_device_category_list.html'
     paginate_by = 25
 
 
-class AcsDeviceCategoryDetail(MrxGroupRequiredMixin, DetailView):
+class AcsDeviceCategoryDetail(DetailView):
     model = AcsDeviceCategory
     template_name = 'acs_device_category_detail.html'
 
 
-class AcsDeviceVendorList(MrxGroupRequiredMixin, ListView):
+class AcsDeviceVendorList(ListView):
     model = AcsDeviceVendor
     template_name = 'acs_device_vendor_list.html'
     paginate_by = 25
 
 
-class AcsDeviceVendorDetail(MrxGroupRequiredMixin, DetailView):
+class AcsDeviceVendorDetail(DetailView):
     model = AcsDeviceVendor
     template_name = 'acs_device_vendor_detail.html'
 
 
-class AcsDeviceList(MrxGroupRequiredMixin, ListView):
+class AcsDeviceList(ListView):
     model = AcsDevice
     template_name = 'acs_device_list.html'
     paginate_by = 25
 
 
-class AcsDeviceDetail(MrxGroupRequiredMixin, DetailView):
+class AcsDeviceDetail(DetailView):
     model = AcsDevice
     template_name = 'acs_device_detail.html'
 
 
-class AllAcsSessions(MrxGroupRequiredMixin, ListView):
+class AllAcsSessions(ListView):
     model = AcsSession
     template_name = 'acs_session_list.html'
     paginate_by = 100
