@@ -441,9 +441,10 @@ class AcsSession(AcsBaseModel):
         if not self.acs_device:
             return False
         uptime_seconds = self.acs_device.acs_get_parameter_value(self.get_acs_parameter_name('django_acs.deviceinfo.uptime'))
-        if uptime_seconds:
-            self._device_uptime = (timezone.now()-timedelta(seconds=int(uptime_seconds)), timezone.now())
-            self.save()
+        if not uptime_seconds:
+            return False
+        self._device_uptime = (timezone.now()-timedelta(seconds=int(uptime_seconds)), timezone.now())
+        self.save()
         return self._device_uptime
 
     @property
