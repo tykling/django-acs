@@ -1,5 +1,4 @@
-{% load mrx_custom_template_tags %}
-{% load mrx_custom_template_filters %}
+{% load custom_template_filters %}
 {% include 'includes/collapsable-panel-header.html' with name='AcsDeviceCategoryList' headline=headline|default:"ACS Device Category List" %}
         {% if acs_device_category_list %}
             {% if is_paginated %}

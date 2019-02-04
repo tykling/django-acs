@@ -1,5 +1,4 @@
-{% load mrx_custom_template_tags %}
-{% load mrx_custom_template_filters %}
+{% load custom_template_filters %}
 {% include 'includes/collapsable-panel-header.html' with name='AcsHttpRequestList' headline=headline|default:"ACS HTTP Request List" %}
         {% if acs_http_request_list %}
             {% if is_paginated %}
