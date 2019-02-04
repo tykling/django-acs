@@ -23,3 +23,8 @@ def truefalseicon(value):
     else:
         return '<i class="fa fa-times" style="color:#494849"></i>'
 
+@register.filter
+def addstr(arg1, arg2):
+    '''concatenate arg1 & arg2'''
+    return str(arg1) + str(arg2)
+
