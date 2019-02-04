@@ -17,12 +17,12 @@
                 </thead>
                 <tbody>
                 {% for acs_device_vendor in acs_device_vendor_list %}
-                    {% url 'acs_device_vendor_detail' pk=acs_device_vendor.id as acs_device_vendor_detail_url %}
+                    {% url 'acsadmin:acs_device_vendor_detail' pk=acs_device_vendor.id as acs_device_vendor_detail_url %}
                     <tr>
                         <td>{% include 'includes/small-details-button.html' with url=acs_device_vendor_detail_url %}{{ acs_device_vendor }}</td>
                         <td>{{ acs_device_vendor.name }}</td>
                         <td>{{ acs_device_vendor.oui }}</td>
-			<td><span class="badge">{{ acs_device_vendor.acsdevicemodels.count }}</span></td>
+                        <td><span class="badge">{{ acs_device_vendor.acsdevicemodels.count }}</span></td>
                         <td>
                             {% include 'includes/details-button.html' with url=acs_device_vendor_detail_url %}
                         </td>

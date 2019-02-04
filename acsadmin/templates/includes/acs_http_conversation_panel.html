@@ -24,23 +24,23 @@
                 {% for acs_http in acs_http_conversationlist %}
                     <tr>
                         {% if acs_http.is_request %}
-                          {% url 'acs_http_request_detail' pk=acs_http.id as acs_http_detail_url %}
+                          {% url 'acsadmin:acs_http_request_detail' pk=acs_http.id as acs_http_detail_url %}
                           {% if acs_http.rpc_response_to %}
-                            {% url 'acs_http_response_detail' pk=acs_http.rpc_response_to.id as response_to_detail_url %}
+                            {% url 'acsadmin:acs_http_response_detail' pk=acs_http.rpc_response_to.id as response_to_detail_url %}
                           {% endif %}
                           {% if acs_http.rpc_response %}
-                            {% url 'acs_http_response_detail' pk=acs_http.rpc_response.id as rpc_response_detail_url %}
+                            {% url 'acsadmin:acs_http_response_detail' pk=acs_http.rpc_response.id as rpc_response_detail_url %}
                           {% endif %}
                         {% else %}
-                          {% url 'acs_http_response_detail' pk=acs_http.id as acs_http_detail_url %}
+                          {% url 'acsadmin:acs_http_response_detail' pk=acs_http.id as acs_http_detail_url %}
                           {% if acs_http.rpc_response_to %}
-                            {% url 'acs_http_request_detail' pk=acs_http.rpc_response_to.id as response_to_detail_url %}
+                            {% url 'acsadmin:acs_http_request_detail' pk=acs_http.rpc_response_to.id as response_to_detail_url %}
                           {% endif %}
                           {% if acs_http.rpc_response %}
-                            {% url 'acs_http_request_detail' pk=acs_http.rpc_response.id as rpc_response_detail_url %}
+                            {% url 'acsadmin:acs_http_request_detail' pk=acs_http.rpc_response.id as rpc_response_detail_url %}
                           {% endif %}
                           {% if acs_http.queuejob %}
-                            {% url 'acs_queue_job_detail' pk=acs_http.queuejob.id as queue_job_detail_url %}
+                            {% url 'acsadmin:acs_queue_job_detail' pk=acs_http.queuejob.id as queue_job_detail_url %}
                           {% endif %}
                         {% endif %}
                         <td>

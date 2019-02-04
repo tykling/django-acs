@@ -16,11 +16,11 @@
                 </thead>
                 <tbody>
                 {% for acs_device_category in acs_device_category_list %}
-                    {% url 'acs_device_category_detail' pk=acs_device_category.id as acs_device_category_detail_url %}
+                    {% url 'acsadmin:acs_device_category_detail' pk=acs_device_category.id as acs_device_category_detail_url %}
                     <tr>
                         <td>{% include 'includes/small-details-button.html' with url=acs_device_category_detail_url %}{{ acs_device_category.tag }}</td>
                         <td>{{ acs_device_category.name }}</td>
-			<td><span class="badge">{{ acs_device_category.acsdevicemodels.count }}</span></td>
+                        <td><span class="badge">{{ acs_device_category.acsdevicemodels.count }}</span></td>
                         <td>
                             {% include 'includes/details-button.html' with url=acs_device_category_detail_url %}
                         </td>

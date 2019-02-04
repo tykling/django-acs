@@ -24,10 +24,10 @@
                 </thead>
                 <tbody>
                 {% for aqj in acs_queue_job_list %}
-                    {% url 'acs_queue_job_detail' pk=aqj.id as acs_queue_job_detail_url %}
-                    {% url 'acs_device_detail' pk=aqj.acs_device.id as acsdevice_detail_url %}
+                    {% url 'acsadmin:acs_queue_job_detail' pk=aqj.id as acs_queue_job_detail_url %}
+                    {% url 'acsadmin:acs_device_detail' pk=aqj.acs_device.id as acsdevice_detail_url %}
                     {% if aqj.handled_in %}
-                      {% url 'acs_http_response_detail' pk=aqj.handled_in.id as handled_in_detail_url %}
+                      {% url 'acsadmin:acs_http_response_detail' pk=aqj.handled_in.id as handled_in_detail_url %}
                     {% endif %}
                     <tr>
                         <td>{% include 'includes/small-details-button.html' with url=acs_queue_job_detail_url %}{{ aqj.tag }}</td>

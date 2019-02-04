@@ -4,9 +4,9 @@
         {% if acs_session_list %}
             {% if not included %}
             <p>
-              {% url 'acs_session_list' as all_sessions %}
-              {% url 'acs_session_list_failed' as only_failed %}
-              {% url 'acs_session_list_failed_verified' as only_failed_verified %}
+              {% url 'acsadmin:acs_session_list' as all_sessions %}
+              {% url 'acsadmin:acs_session_list_failed' as only_failed %}
+              {% url 'acsadmin:acs_session_list_failed_verified' as only_failed_verified %}
               {% include 'includes/button.html' with url=all_sessions buttontext="Show All Sessions" %}
               {% include 'includes/button.html' with url=only_failed buttontext="Show Only Failed Sessions" %}
               {% include 'includes/button.html' with url=only_failed_verified buttontext="Show Only Dailed and IP Verified Sessions" %}
@@ -36,8 +36,8 @@
                 </thead>
                 <tbody>
                 {% for acs_session in acs_session_list %}
-                    {% url 'acs_session_detail' pk=acs_session.id as acs_session_detail_url %}
-                    {% url 'acs_device_detail' pk=acs_session.acs_device.id as acs_device_detail_url %}
+                    {% url 'acsadmin:acs_session_detail' pk=acs_session.id as acs_session_detail_url %}
+                    {% url 'acsadmin:acs_device_detail' pk=acs_session.acs_device.id as acs_device_detail_url %}
                     <tr {% if not acs_session.session_result %} class="danger"{% endif %}>
                         <td>{% include 'includes/small-details-button.html' with url=acs_session_detail_url %}{{ acs_session.tag }}</td>
                         <td>{% include 'includes/small-details-button.html' with url=acs_device_detail_url %}{{ acs_session.acs_device.tag }}</td>
@@ -60,7 +60,7 @@
                 </tbody>
             </table>
             {% if included %}
-                {% url 'acsdevice_all_acs_sessions' pk=acs_device.id as all_acs_sessions_url %}
+                {% url 'acsadmin:acsdevice_all_acs_sessions' pk=acs_device.id as all_acs_sessions_url %}
                 {% include 'includes/button.html' with url=all_acs_sessions_url buttontext='Show All ACS Sessions for This ACS Device' %}
             {% endif %}
             {% if is_paginated %}

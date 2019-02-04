@@ -5,9 +5,9 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-9">
-                {% url 'acs_device_detail' pk=acs_device.id as acs_device_detail_url %}
-                {% url 'acs_device_vendor_detail' pk=acs_device.model.vendor.id as acs_device_vendor_detail_url %}
-                {% url 'acs_device_model_detail' pk=acs_device.model.id as acs_device_model_detail_url %}
+                {% url 'acsadmin:acs_device_detail' pk=acs_device.id as acs_device_detail_url %}
+                {% url 'acsadmin:acs_device_vendor_detail' pk=acs_device.model.vendor.id as acs_device_vendor_detail_url %}
+                {% url 'acsadmin:acs_device_model_detail' pk=acs_device.model.id as acs_device_model_detail_url %}
                 <table class="table table-bordered">
                     <tr>
                         <th style="text-align: right">ACS Device</th>
@@ -54,7 +54,7 @@
             <div class="col-md-3">
                 <div class="panel">
                     <div class="panel-body">
-                        {% url 'acs_queue_job_create' pk=acs_device.id as acs_queue_job_create_url %}
+                        {% url 'acsadmin:acs_queue_job_create' pk=acs_device.id as acs_queue_job_create_url %}
                         <p>{% include 'includes/create-button.html' with url=acs_queue_job_create_url buttontext='Schedule ACS RPC Job' %}</p>
                     </div>
                 </div>

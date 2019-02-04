@@ -20,9 +20,9 @@
                 </thead>
                 <tbody>
                 {% for acs_device_model in acs_device_model_list %}
-                    {% url 'acs_device_model_detail' pk=acs_device_model.id as acs_device_model_detail_url %}
-                    {% url 'acs_device_vendor_detail' pk=acs_device_model.vendor.id as acs_device_vendor_detail_url %}
-                    {% url 'acs_device_category_detail' pk=acs_device_model.category.id as acs_device_category_detail_url %}
+                    {% url 'acsadmin:acs_device_model_detail' pk=acs_device_model.id as acs_device_model_detail_url %}
+                    {% url 'acsadmin:acs_device_vendor_detail' pk=acs_device_model.vendor.id as acs_device_vendor_detail_url %}
+                    {% url 'acsadmin:acs_device_category_detail' pk=acs_device_model.category.id as acs_device_category_detail_url %}
                     <tr>
                         <td>{% include 'includes/small-details-button.html' with url=acs_device_model_detail_url %}{{ acs_device_model.tag }}</td>
                         <td>{{ acs_device_model.name }}</td>
@@ -30,7 +30,7 @@
                         <td>{% include 'includes/small-details-button.html' with url=acs_device_category_detail_url %}{{ acs_device_model.category }}</td>
                         <td>{{ acs_device_model.desired_config_level|default:"N/A" }}</td>
                         <td>{{ acs_device_model.desired_software_version|default:"N/A" }}</td>
-			<td><span class="badge">{{ acs_device_model.acsdevices.count }}</span></td>
+                        <td><span class="badge">{{ acs_device_model.acsdevices.count }}</span></td>
                         <td>
                             {% include 'includes/details-button.html' with url=acs_device_model_detail_url %}
                         </td>

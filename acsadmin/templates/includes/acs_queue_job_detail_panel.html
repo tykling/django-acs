@@ -5,10 +5,10 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-9">
-                {% url 'acs_queue_job_detail' pk=aqj.id as acs_queue_job_detail_url %}
-                {% url 'acs_device_detail' pk=aqj.acs_device.id as acs_device_detail_url %}
+                {% url 'acsadmin:acs_queue_job_detail' pk=aqj.id as acs_queue_job_detail_url %}
+                {% url 'acsadmin:acs_device_detail' pk=aqj.acs_device.id as acs_device_detail_url %}
                 {% if aqj.handled_in %}
-                  {% url 'acs_http_response_detail' pk=aqj.handled_in.id as handled_in_detail_url %}
+                  {% url 'acsadmin:acs_http_response_detail' pk=aqj.handled_in.id as handled_in_detail_url %}
                 {% endif %}
                 <table class="table table-bordered">
                     <tr>

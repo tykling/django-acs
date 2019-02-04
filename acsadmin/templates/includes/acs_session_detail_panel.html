@@ -5,8 +5,8 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-9">
-                {% url 'acs_session_detail' pk=acs_session.id as acs_session_detail_url %}
-                {% url 'acs_device_detail' pk=acs_session.acs_device.id as acs_device_detail_url %}
+                {% url 'acsadmin:acs_session_detail' pk=acs_session.id as acs_session_detail_url %}
+                {% url 'acsadmin:acs_device_detail' pk=acs_session.acs_device.id as acs_device_detail_url %}
                 <table class="table table-bordered">
                     <tr>
                         <th style="text-align: right">ACS Session</th>
