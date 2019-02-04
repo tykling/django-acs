@@ -1,25 +1,21 @@
+import json
+from lxml import etree
+from ipware.ip import get_ip
+from defusedxml.lxml import fromstring
+from datetime import timedelta
+
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.views.generic import View, ListView, DetailView
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic import View
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.conf import settings
 from django.utils import timezone
-from ipware.ip import get_ip
-from lxml import etree
-from mrxcore.views import MrxGroupRequiredMixin
 from django.utils.dateparse import parse_datetime
-from defusedxml.lxml import fromstring
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib import messages
-from django.views.generic.detail import SingleObjectMixin
-from datetime import timedelta
-import json, uuid
 from xmlarchive.utils import create_xml_document
+
 from .models import *
 from .utils import get_value_from_parameterlist
 from .response import nse, get_soap_envelope
-from .forms import AcsDeviceActionForm
 
 
 class AcsServerView(View):
