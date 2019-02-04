@@ -28,3 +28,7 @@ def addstr(arg1, arg2):
     '''concatenate arg1 & arg2'''
     return str(arg1) + str(arg2)
 
+@register.filter
+def prettyprintjson(jsondata):
+    return json.dumps(json.loads(jsondata), indent=4) if jsondata else 'N/A'
+
