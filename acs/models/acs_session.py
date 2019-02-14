@@ -139,7 +139,7 @@ class AcsSession(AcsBaseModel):
         configdict = {}
 
         # set InformInterval to 2 hours
-        configdict['django_acs.acs.informinterval'] = 7200
+        configdict['django_acs.acs.informinterval'] = get_django_acs_setting('inform_interval')
 
         # enable ACS managed firmware upgrades (disables manufacturer/provider upgrades)
         configdict['django_acs.acs.acs_managed_upgrades'] = True

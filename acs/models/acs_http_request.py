@@ -1,13 +1,15 @@
-from django.db import models
-from django.http import HttpResponse
-from django.urls import reverse
 from lxml import etree
 from defusedxml.lxml import fromstring
 import uuid
+
+from django.db import models
+from django.http import HttpResponse
+from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
+
 from acs.response import get_soap_envelope
 from acs.models import AcsHttpBaseModel
-from django.core.exceptions import ObjectDoesNotExist
-from xmlarchive.utils import create_xml_document
+from acs.utils import create_xml_document
 
 class AcsHttpRequest(AcsHttpBaseModel):
     """ Every HTTP request received on the ACS server URL is saved as an instance
@@ -78,7 +80,7 @@ class AcsHttpRequest(AcsHttpBaseModel):
         from acs.models import AcsHttpResponse
         acs_http_response = AcsHttpResponse.objects.create(
             http_request=self,
-            fk_body=create_xml_document(response.content),
+            fk_body=create_xml_document(xml=response.content),
             cwmp_id=response_cwmp_id,
             cwmp_rpc_method=response_cwmp_rpc_method,
         )

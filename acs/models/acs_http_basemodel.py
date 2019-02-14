@@ -1,9 +1,11 @@
+from defusedxml.lxml import fromstring
+
 from django.db import models
 from django.conf import settings
 from django.utils.functional import cached_property
-from acs.models import AcsBaseModel
-from defusedxml.lxml import fromstring
 
+from acs.models import AcsBaseModel
+from acs.utils import get_django_acs_setting
 
 class AcsHttpBaseModel(AcsBaseModel):
     """ 
@@ -12,7 +14,7 @@ class AcsHttpBaseModel(AcsBaseModel):
         methods shared by the two models.
     """
     fk_body = models.ForeignKey(
-        settings.DJANGO_ACS['xml_storage_model'],
+        get_django_acs_setting('xml_storage_model'),
         null=True,
         blank=True,
         on_delete=models.PROTECT,
@@ -36,7 +38,6 @@ class AcsHttpBaseModel(AcsBaseModel):
         if not self.body:
             return False
         try:
-            # py3 ready! /tyk
             xmlroot = fromstring(bytes(self.body, 'utf-8'))
             # use settings.SOAP_NAMESPACES here since the namespace 'soap-env' does not depend on cwmp version
             return xmlroot.find('soap-env:Body', settings.SOAP_NAMESPACES)

@@ -11,10 +11,9 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServer
 from django.conf import settings
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
-from xmlarchive.utils import create_xml_document
 
 from .models import *
-from .utils import get_value_from_parameterlist
+from .utils import get_value_from_parameterlist, get_django_acs_setting, get_xml_storage_model
 from .response import nse, get_soap_envelope
 
 
@@ -29,7 +28,7 @@ class AcsServerView(View):
     def post(self, request, *args, **kwargs):
         ### get the client IP from the request
         ip = get_ip(request)
-        informinterval = 7200 # informinterval should come from settings or something, hardcoded for now
+        informinterval = get_django_acs_setting('inform_interval')
 
         ### check if we have an acs session id in a cookie
         if 'acs_session_id' in request.COOKIES:
@@ -94,7 +93,7 @@ class AcsServerView(View):
             acs_session=acs_session,
             request_headers=json.dumps(headerdict),
             request_xml_valid=validxml,
-            fk_body=create_xml_document(request.body)
+            fk_body=create_xml_document(xml=request.body),
         )
         acs_session.acs_log("saved acs http request %s to db" % acs_http_request)
 
@@ -347,7 +346,7 @@ class AcsServerView(View):
                 ### save the HTTP response
                 acs_http_response = AcsHttpResponse.objects.create(
                     http_request=acs_http_request,
-                    fk_body=create_xml_document(response.content),
+                    fk_body=create_xml_document(xml=response.content),
                     cwmp_id=response_cwmp_id,
                     cwmp_rpc_method=response_cwmp_rpc_method,
                     rpc_response_to=acs_http_request,

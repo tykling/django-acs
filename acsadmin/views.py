@@ -2,7 +2,6 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormView, CreateView
 from django.shortcuts import get_object_or_404
 
-from xmlarchive.utils import create_xml_document
 from acs.models import *
 from .forms import AcsDeviceActionForm
 
