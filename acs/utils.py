@@ -1,10 +1,9 @@
 import io, paramiko, re
 
-from django.conf import settings
 from django.apps import apps
 
 from radius.models import Radacct
-from .default_settings import django_acs_default_settings
+from acs.conf import acs_settings
 
 
 def create_xml_document(xml):
@@ -19,27 +18,11 @@ def get_xml_storage_model():
     """
     Return the configured xml storage model class using apps.get_model()
     """
-    app, model = settings.DJANGO_ACS['xml_storage_model'].split(".")
+    app, model = acs_settings.XML_STORAGE_MODEL.split(".")
     return apps.get_model(
         app_label=app,
         model_name=model
     )
-
-
-def get_django_acs_setting(setting):
-    """
-    A convenience method for getting DJANGO_ACS settings.
-    Falls back to defaults for undefined settings.
-    """
-    if not hasattr(settings, "DJANGO_ACS"):
-        return False
-
-    if setting in settings.DJANGO_ACS:
-        # return user setting
-        return settings.DJANGO_ACS[setting]
-    else:
-        # return our default
-        return django_acs_default_settings[setting]
 
 
 def get_value_from_parameterlist(parameterlist, key):

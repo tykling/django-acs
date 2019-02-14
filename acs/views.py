@@ -13,8 +13,9 @@ from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 
 from .models import *
-from .utils import get_value_from_parameterlist, get_django_acs_setting, get_xml_storage_model
+from .utils import get_value_from_parameterlist, create_xml_document
 from .response import nse, get_soap_envelope
+from .conf import acs_settings
 
 
 class AcsServerView(View):
@@ -28,7 +29,7 @@ class AcsServerView(View):
     def post(self, request, *args, **kwargs):
         ### get the client IP from the request
         ip = get_ip(request)
-        informinterval = get_django_acs_setting('inform_interval')
+        informinterval = acs_settings.INFORM_INTERVAL
 
         ### check if we have an acs session id in a cookie
         if 'acs_session_id' in request.COOKIES:
@@ -43,8 +44,8 @@ class AcsServerView(View):
                     created_date__gt=timezone.now()-timedelta(seconds=informinterval),
                 ).count()
 
-                if sessions_since_informinterval > 3:
-                    message = "acs session DENIED: the IP %s already has %s sessions the last %s seconds, no thanks" % (ip, sessions_since_informinterval, informinterval)
+                if sessions_since_informinterval > acs_settings.INFORM_LIMIT_PER_INTERVAL:
+                    message = "acs session DENIED: the IP %s already has %s sessions the last %s seconds, no thanks (limit is %s)" % (ip, sessions_since_informinterval, informinterval, acs_settings.INFORM_LIMIT_PER_INTERVAL)
                     print(message)
                     return HttpResponse(status=420)
 
@@ -60,8 +61,8 @@ class AcsServerView(View):
                 created_date__gt=timezone.now()-timedelta(seconds=informinterval),
             ).count()
 
-            if sessions_since_informinterval > 1:
-                message = "acs session DENIED: the IP %s already has %s sessions the last %s seconds, no thanks" % (ip, sessions_since_informinterval, informinterval)
+            if sessions_since_informinterval > acs_settings.INFORM_LIMIT_PER_INTERVAL:
+                message = "acs session DENIED: the IP %s already has %s sessions the last %s seconds, no thanks (limit is %s)" % (ip, sessions_since_informinterval, informinterval, acs_settings.INFORM_LIMIT_PER_INTERVAL)
                 print(message)
                 return HttpResponse(status=420)
 

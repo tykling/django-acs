@@ -14,6 +14,7 @@ from acs.models import AcsHttpResponse, AcsQueueJob
 from acs.utils import *
 from acs.response import get_soap_xml_object
 from acs.default_acs_parametermap import default_acs_device_parametermap
+from acs.conf import acs_settings
 
 logger = logging.getLogger('django_acs.%s' % __name__)
 
@@ -139,7 +140,7 @@ class AcsSession(AcsBaseModel):
         configdict = {}
 
         # set InformInterval to 2 hours
-        configdict['django_acs.acs.informinterval'] = get_django_acs_setting('inform_interval')
+        configdict['django_acs.acs.informinterval'] = acs_settings.INFORM_INTERVAL
 
         # enable ACS managed firmware upgrades (disables manufacturer/provider upgrades)
         configdict['django_acs.acs.acs_managed_upgrades'] = True

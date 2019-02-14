@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.functional import cached_property
 
 from acs.models import AcsBaseModel
-from acs.utils import get_django_acs_setting
+
 
 class AcsHttpBaseModel(AcsBaseModel):
     """ 
@@ -14,7 +14,7 @@ class AcsHttpBaseModel(AcsBaseModel):
         methods shared by the two models.
     """
     fk_body = models.ForeignKey(
-        get_django_acs_setting('xml_storage_model'),
+        settings.DJANGO_ACS['XML_STORAGE_MODEL'],
         null=True,
         blank=True,
         on_delete=models.PROTECT,
