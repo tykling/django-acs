@@ -40,11 +40,15 @@ def prettyprintxml(xml):
     '''
     This assumes too much about encoding and stuff.
     Should be possible to prettyprint without changing the xml at all.
+    Catch lxml.etree.XMLSyntaxError so we still return the xml if it has syntax errors, with a message.
     '''
-    return etree.tostring(
-        fromstring(xml.encode('utf-8')),
-        pretty_print=True,
-        xml_declaration=True,
-        encoding='utf-8',
-    ).decode('utf-8')
+    try:
+        return etree.tostring(
+            fromstring(xml.encode('utf-8')),
+            pretty_print=True,
+            xml_declaration=True,
+            encoding='utf-8',
+        ).decode('utf-8')
+    except etree.XMLSyntaxError:
+        return "CAUGHT lxml.etree.XMLSyntaxError:\n%s" % xml
 

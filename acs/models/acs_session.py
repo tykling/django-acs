@@ -504,7 +504,7 @@ class AcsSession(AcsBaseModel):
     def acs_http_conversationlist(self):
         conversationlist = []
         for req in self.acs_http_requests.all():
-            if req.acs_http_response:
+            if hasattr(req, 'acs_http_response'):
                 conversationlist.append(req.acs_http_response)
             conversationlist.append(req)
         return conversationlist
