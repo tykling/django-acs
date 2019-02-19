@@ -355,7 +355,7 @@ class AcsServerView(View):
                 )
                 acs_session.acs_log("responding to CPE %s with %s" % (acs_session.acs_device, response_cwmp_rpc_method))
 
-            elif acs_http_request.cwmp_rpc_method[:-8] in settings.CWMP_CPE_VALID_RPC_METHODS:
+            elif acs_http_request.cwmp_rpc_method and acs_http_request.cwmp_rpc_method[:-8] in settings.CWMP_CPE_VALID_RPC_METHODS:
                 #####################################################################################################
                 acs_session.acs_log('the CPE %s is responding to an RPC call from the ACS: %s' % (acs_session.acs_device, acs_http_request.cwmp_rpc_method))
                 ### first link this http request to the related rpc request (which is in a http response),
