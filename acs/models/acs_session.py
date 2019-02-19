@@ -243,7 +243,7 @@ class AcsSession(AcsBaseModel):
             return True
 
         # check if we have already done a Download RPC call in this session
-        if self.acs_http_responses.filter(cwmp_rpc_method='Download').exists():
+        if self.acs_http_responses.filter(soap_element='{%s}Download' % self.cwmp_namespace).exists():
             # we already have a Download job in this session, one must be enough
             return True
 
