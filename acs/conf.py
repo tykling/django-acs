@@ -43,6 +43,13 @@ class AcsDefaultSettings:
     """
     INFORM_LIMIT_PER_INTERVAL = 2
     INFORM_INTERVAL = 3600
+    CWMP_NAMESPACES = [
+        'urn:dslforum-org:cwmp-1-0',
+        'urn:dslforum-org:cwmp-1-1',
+        'urn:dslforum-org:cwmp-1-2',
+        'urn:dslforum-org:cwmp-1-3',
+        'urn:dslforum-org:cwmp-1-4',
+    ]
 
 # initiate our settings object
 acs_settings = AcsSettingsBuilder()

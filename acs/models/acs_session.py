@@ -93,7 +93,7 @@ class AcsSession(AcsBaseModel):
         """
         Check if we have done both SetParameterValues and SetParameterAttributes in this session
         """
-        if self.acs_http_responses.filter(cwmp_rpc_method="SetParameterValues").exists() and self.acs_http_responses.filter(cwmp_rpc_method="SetParameterAttributes").exists():
+        if self.acs_http_responses.filter(soap_element="{%s}SetParameterValues" % self.cwmp_namespace).exists() and self.acs_http_responses.filter(soap_element="{%s}SetParameterAttributes" % self.cwmp_namespace).exists():
             return True
         return False
 
@@ -104,11 +104,11 @@ class AcsSession(AcsBaseModel):
         Check if this has been done or not.
         """
         # first get the id of the SetParameterValues call
-        if not self.acs_http_responses.filter(cwmp_rpc_method="SetParameterValues").exists():
+        if not self.acs_http_responses.filter(soap_element="{%s}SetParameterValues" % self.cwmp_namespace).exists():
             # no SetParameterValues call found
             return False
-        configcall = self.acs_http_responses.filter(cwmp_rpc_method="SetParameterValues").first()
-        if self.acs_http_responses.filter(cwmp_rpc_method="GetParameterNames", id__gt=configcall.id).exists() and self.acs_http_responses.filter(cwmp_rpc_method="GetParameterValues", id__gt=configcall.id).exists() and self.acs_http_responses.filter(cwmp_rpc_method="GetParameterAttributes", id__gt=configcall.id).exists():
+        configcall = self.acs_http_responses.filter(soap_element="{%s}SetParameterValues" % self.cwmp_namespace).first()
+        if self.acs_http_responses.filter(soap_element="{%s}GetParameterNames" % self.cwmp_namespace, id__gt=configcall.id).exists() and self.acs_http_responses.filter(soap_element="{%s}GetParameterValues" % self.cwmp_namespace, id__gt=configcall.id).exists() and self.acs_http_responses.filter(soap_element="{%s}GetParameterAttributes" % self.cwmp_namespace, id__gt=configcall.id).exists():
             return True
         return False
 
@@ -348,7 +348,7 @@ class AcsSession(AcsBaseModel):
         Loop over the GetParameterValuesResponse http requests in this acs session and find
         one asking for the whole device tree
         """
-        for httpreq in self.acs_http_requests.filter(cwmp_rpc_method='GetParameterValuesResponse'):
+        for httpreq in self.acs_http_requests.filter(soap_element='{%s}GetParameterValuesResponse' % self.cwmp_namespace):
             if httpreq.soap_body.find('cwmp:GetParameterValuesResponse', self.soap_namespaces).xpath('.//string[text()="%s."]' % self.root_data_model.root_object) is not None:
                 # one of the requested values is Device. - great! return this request
                 return httpreq
@@ -360,7 +360,7 @@ class AcsSession(AcsBaseModel):
         Loop over the GetParameterNamesResponse http requests in this acs session and find
         one asking for the whole device tree
         """
-        for httpreq in self.acs_http_requests.filter(cwmp_rpc_method='GetParameterNamesResponse'):
+        for httpreq in self.acs_http_requests.filter(soap_element='{%s}GetParameterNamesResponse' % self.cwmp_namespace):
             if httpreq.soap_body.find('cwmp:GetParameterNamesResponse', self.soap_namespaces).xpath('.//string[text()="%s."]' % self.root_data_model.root_object) is not None:
                 # one of the requested values is Device. - great! return this request
                 return httpreq
@@ -518,24 +518,14 @@ class AcsSession(AcsBaseModel):
 
     def update_session_result(self):
         latest_tx = self.get_latest_http_tx()
-        self.latest_rpc_method = latest_tx.cwmp_rpc_method
+        self.latest_rpc_method = latest_tx.soap_element
         self.session_end = latest_tx.created_date
-        if self.latest_rpc_method != '(empty response body)' or latest_tx.is_request:
+        if self.latest_rpc_method != '{%s}(empty response body)' % self.cwmp_namespace or latest_tx.is_request:
             # the last http tx in this acs session is not an http response with the cwmp_rpc_method '(empty response body)' so something is fucky
             self.session_result=False
         else:
             self.session_result=True
         self.save()
-
-    def get_latest_rpc_method(self):
-        if not self.latest_rpc_method:
-            # this might need to be wrapped in a try/except for weird cases
-            latesttx = self.get_latest_http_tx()
-            if latesttx:
-                # update self.latest_rpc_method
-                self.latest_rpc_method = self.get_latest_http_tx().cwmp_rpc_method
-                self.save()
-        return self.latest_rpc_method
 
 
 ###########################################################################################################

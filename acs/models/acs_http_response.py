@@ -29,3 +29,7 @@ class AcsHttpResponse(AcsHttpBaseModel):
     def queuejob(self):
         return self.queuejobs.all().first()
 
+    @property
+    def acs_session(self):
+        return self.http_request.acs_session
+

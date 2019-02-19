@@ -127,9 +127,6 @@ class AcsServerView(View):
                 ### parse the cwmp id from the soap header
                 acs_http_request.cwmp_id = soap_header.find('cwmp:ID', acs_session.soap_namespaces).text
 
-            ### parse the cwmp method from the soap Body (but first remove the cwmp namespace)
-            acs_http_request.cwmp_rpc_method = list(soap_body)[0].tag.replace('{%s}' % acs_session.soap_namespaces['cwmp'], '')
-
             ### do we have exactly one soap object in this soap body?
             if len(list(soap_body)) != 1:
                 acs_http_request.save()
@@ -139,10 +136,14 @@ class AcsServerView(View):
             else:
                 ### this appears (for now) to be a valid soap envelope
                 acs_http_request.request_soap_valid = True
+
+            ### get the soap element in the format {namespace}Method
+            acs_http_request.soap_element = list(soap_body)[0].tag
+
         else:
             ### empty request body, this means that the CPE is done for now
             acs_http_request.cwmp_id = ''
-            acs_http_request.cwmp_rpc_method = '(empty request body)'
+            acs_http_request.soap_element = '{%s}(empty request body)' % acs_http_request.acs_session.soap_namespaces['cwmp']
 
         ### save the http request
         acs_http_request.save()
@@ -349,7 +350,7 @@ class AcsServerView(View):
                     http_request=acs_http_request,
                     fk_body=create_xml_document(xml=response.content),
                     cwmp_id=response_cwmp_id,
-                    cwmp_rpc_method=response_cwmp_rpc_method,
+                    soap_element="{%s}%s" % (acs_session.soap_namespaces['cwmp'], response_cwmp_rpc_method),
                     rpc_response_to=acs_http_request,
                 )
                 acs_session.acs_log("responding to CPE %s with %s" % (acs_session.acs_device, response_cwmp_rpc_method))

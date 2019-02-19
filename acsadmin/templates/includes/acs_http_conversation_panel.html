@@ -53,7 +53,7 @@
                           {% endif %}
                         </td>
                         <td>{{ acs_http.created_date }}</td>
-                        <td>{{ acs_http.cwmp_rpc_method }}</td>
+                        <td>{{ acs_http.soap_element_ns }}</td>
                         <td class='text-center'>{% if acs_http.is_request %}<span class="badge">{{ acs_http.request_headers|length }} bytes</span>{% else %}N/A{% endif %}</td>
                         <td class='text-center'><span class="badge">{{ acs_http.body|length }} bytes</span></td>
                         <td>

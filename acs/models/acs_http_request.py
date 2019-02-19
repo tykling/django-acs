@@ -82,7 +82,7 @@ class AcsHttpRequest(AcsHttpBaseModel):
             http_request=self,
             fk_body=create_xml_document(xml=response.content),
             cwmp_id=response_cwmp_id,
-            cwmp_rpc_method=response_cwmp_rpc_method,
+            soap_element="{%s}%s" % (self.acs_session.soap_namespaces['cwmp'], response_cwmp_rpc_method),
         )
         self.acs_session.acs_log("Created ACS HTTP response %s" % acs_http_response)
 
