@@ -527,6 +527,11 @@ class AcsSession(AcsBaseModel):
             self.session_result=True
         self.save()
 
+        # update acs device
+        ad = self.acs_device
+        ad.acs_latest_session_result=self.session_result=True
+        ad.save()
+
 
 ###########################################################################################################
 ### ACS RPC METHODS BELOW HERE

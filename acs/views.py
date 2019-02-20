@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServer
 from django.conf import settings
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
+from django.db.models import F
 
 from .models import *
 from .utils import get_value_from_parameterlist, create_xml_document
@@ -235,14 +236,14 @@ class AcsServerView(View):
                         serial = serial
                     )
 
+                    ### set latest session result to False and increase inform count
+                    acs_device.acs_latest_session_result = False
+                    acs_device.acs_inform_count = F('acs_inform_count') + 1
+                    acs_device.save()
+
                     # save acs_device to acs_session
                     acs_session.acs_device = acs_device
                     acs_session.save()
-
-                    # set imported=False to differentiate the acsdevices created in a migration from the ones created by an acs client (TODO: remove this bit of code in time)
-                    if acs_device.imported:
-                        acs_device.imported=False
-                        acs_device.save()
 
                     # attempt acs device association
                     if not acs_device.get_related_device():

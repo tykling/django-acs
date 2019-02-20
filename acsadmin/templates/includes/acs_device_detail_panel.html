@@ -33,6 +33,14 @@
                         <td>{{ acs_device.acs_latest_inform | default:"N/A" }}</td>
                     </tr>
                     <tr>
+                        <th style="text-align: right">Latest Inform Result</th>
+                        <td>{{ acs_device.acs_latest_session_result }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right">Number of Informs</th>
+                        <td>{{ acs_device.acs_inform_count }}</td>
+                    </tr>
+                    <tr>
                         <th style="text-align: right">Current Config Level</th>
                         <td>{{ acs_device.current_config_level | default:"N/A" }}</td>
                     </tr>

@@ -18,7 +18,7 @@ def pretty_timedelta(value):
         # return a pretty printed version without microseconds
         return str(timedelta(seconds=int(value.total_seconds())))
 
-@register.filter
+@register.filter(is_safe=True)
 def truefalseicon(value):
     '''Returns a icon with a green checkmark or a red X depending on true/false input, requires font-awesome to be any good'''
     if value:

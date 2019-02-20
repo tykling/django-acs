@@ -13,6 +13,7 @@
                     <th>Serial</th>
                     <th>Related Device</th>
                     <th>Inform</th>
+                    <th>Informs</th>
                     <th>Config Level</th>
                     <th>Actions</th>
                 </tr>
@@ -33,7 +34,8 @@
                 N/A
             {% endif %}
         </td>
-                    <td>{{ ad.acs_latest_inform }}</td>
+                    <td>{{ ad.acs_latest_inform }} {{ ad.acs_latest_session_result|truefalseicon|safe }}</td>
+                    <td><span class="badge">{{ ad.acs_inform_count }}</span></td>
                     <td>{{ ad.current_config_level }}{% if ad.desired_config_level %}<span class="danger">(desired: {{ ad.desired_config_level }})</span>{% endif %}</td>
                     <td>
                         {% include 'includes/details-button.html' with url=acsdevice_detail_url %}
