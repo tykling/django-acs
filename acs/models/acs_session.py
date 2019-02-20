@@ -529,7 +529,7 @@ class AcsSession(AcsBaseModel):
 
         # update acs device
         ad = self.acs_device
-        ad.acs_latest_session_result=self.session_result=True
+        ad.acs_latest_session_result=self.session_result
         ad.save()
 
 
