@@ -29,6 +29,8 @@ class AcsDevice(AcsBaseModel):
     desired_software_version = models.CharField(max_length=50, blank=True)
     acs_xmpp_password = models.CharField(max_length=50, blank=True)
     acs_latest_inform = models.DateTimeField(null=True, blank=True)
+    acs_latest_session_result = models.BooleanField(default=None, null=True, blank=True)
+    acs_inform_count = models.PositiveIntegerField(default=0)
     acs_parameters = models.TextField(blank=True)
     acs_parameters_time = models.DateTimeField(null=True, blank=True)
     imported = models.BooleanField(default=False)
