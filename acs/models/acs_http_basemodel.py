@@ -85,8 +85,8 @@ class AcsHttpBaseModel(AcsBaseModel):
             return False
         try:
             xmlroot = fromstring(bytes(self.body, 'utf-8'))
-            # use settings.SOAP_NAMESPACES here since the namespace 'soap-env' does not depend on cwmp version
-            return xmlroot.find('soap-env:Body', settings.SOAP_NAMESPACES)
+            # use acs_settings.SOAP_NAMESPACES directly here (rather than self.acs_session.soap_namespaces) since the namespace 'soap-env' does not depend on cwmp version
+            return xmlroot.find('soap-env:Body', acs_settings.SOAP_NAMESPACES)
         except Exception:
             return False
 

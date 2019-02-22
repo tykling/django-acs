@@ -16,6 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from acs.response import get_soap_xml_object
 from acs.utils import run_ssh_command, get_value_from_parameterlist
+from acs.conf import acs_settings
 
 logger = logging.getLogger('django_acs.%s' % __name__)
 
@@ -223,7 +224,7 @@ class AcsDevice(AcsBaseModel):
         for child in xmlroot.iterchildren():
             value = child.find('Value')
             paramdict[child.find('Name').text] = {
-                'type': value.attrib['{%s}type' % settings.SOAP_NAMESPACES['xsi']], # use settings.SOAP_NAMESPACES because namespace 'xsi' does not depend on cwmp version
+                'type': value.attrib['{%s}type' % acs_settings.SOAP_NAMESPACES['xsi']],
                 'value': value.text,
                 'writable': child.find('Writable').text,
                 'notification': child.find('Notification').text if child.find('Notification') is not None else "N/A",

@@ -5,6 +5,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import MultipleObjectsReturned
 
+from acs.conf import acs_settings
+
 logger = logging.getLogger('django_acs.%s' % __name__)
 
 
@@ -168,12 +170,12 @@ def get_soap_envelope(cwmp_id, acs_session):
 
 def nse(namespace, element):
     '''
-    Return a namespaced element based on the settings.SOAP_NAMESPACES
+    Return a namespaced element based on the acs_settings.SOAP_NAMESPACES
     '''
-    if namespace=='cwmp' and namespace not in settings.SOAP_NAMESPACES:
+    if namespace=='cwmp' and namespace not in acs_settings.SOAP_NAMESPACES:
         # default to cwmp1.0 if we have no session to decide from
         return '{urn:dslforum-org:cwmp-1-0}%s' % element
-    return '{%s}%s' % (settings.SOAP_NAMESPACES[namespace], element)
+    return '{%s}%s' % (acs_settings.SOAP_NAMESPACES[namespace], element)
 
 
 def add_pvs(element, key, value):

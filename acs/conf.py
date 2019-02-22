@@ -43,6 +43,8 @@ class AcsDefaultSettings:
     """
     INFORM_LIMIT_PER_INTERVAL = 2
     INFORM_INTERVAL = 3600
+
+    # supported CWMP namespaces
     CWMP_NAMESPACES = [
         'urn:dslforum-org:cwmp-1-0',
         'urn:dslforum-org:cwmp-1-1',
@@ -50,6 +52,15 @@ class AcsDefaultSettings:
         'urn:dslforum-org:cwmp-1-3',
         'urn:dslforum-org:cwmp-1-4',
     ]
+
+    # SOAP namespaces used in django-acs
+    SOAP_NAMESPACES = {
+        'soap-env': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'soap-enc': 'http://schemas.xmlsoap.org/soap/encoding/',
+        'xsd': 'http://www.w3.org/2001/XMLSchema',
+        'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    }
+
 
 # initiate our settings object
 acs_settings = AcsSettingsBuilder()

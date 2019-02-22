@@ -459,8 +459,8 @@ class AcsSession(AcsBaseModel):
             # cannot determine namespaces without knowing which cwmp version we are using
             return False
 
-        # add the cwmp namespace to the settings.SOAP_NAMESPACES dict and return
-        namespaces = settings.SOAP_NAMESPACES
+        # add the cwmp namespace to the acs_settings.SOAP_NAMESPACES dict and return
+        namespaces = acs_settings.SOAP_NAMESPACES
         namespaces.update({
             'cwmp': self.cwmp_namespace,
         })
