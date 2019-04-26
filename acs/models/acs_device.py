@@ -279,12 +279,21 @@ class AcsDevice(AcsBaseModel):
         return self.acs_queue_jobs.filter(processed=False)
 
     def get_related_device(self):
-        """Returns the first related object (outside the acs app) which has a foreignkey field pointing to this instance"""
-        for field in [f for f in self._meta.get_fields() if f.one_to_many and f.auto_created and not f.concrete]:
-            if field.related_model._meta.app_label == 'acs':
-                # this is probably an acs session or an acs job, skip
-                continue
-            return getattr(self, field.get_accessor_name()).first()
+        """
+        Loops over models in settings.ACS_DEVICE_DJANGO_MODELS and checks each to find
+        the related device (if any).
+        Returns the related device or None
+        """
+        for acsmodel in settings.ACS_DEVICE_DJANGO_MODELS:
+            devicemodel = apps.get_model(acsmodel['app'], acsmodel['model'])
+            kwargs = {
+                acsmodel['acsdevice_relation_field']: self
+            }
+            try:
+                return devicemodel.objects.get(**kwargs)
+            except devicemodel.DoesNotExist:
+                # no match in this model, try the next
+                pass
 
     @property
     def latest_client_ip(self):
@@ -296,7 +305,8 @@ class AcsDevice(AcsBaseModel):
 
     def associate_with_related_device(self):
         """
-        Find the real device which belongs to this acs device (if any), and create the foreignkey to this model as needed
+        Find the real device which belongs to this acs device (if any),
+        and create the foreignkey to this model as needed.
         """
         if self.get_related_device():
             # this acs_device is already associated with a device
