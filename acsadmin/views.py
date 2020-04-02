@@ -31,7 +31,7 @@ class AcsQueueJobCreate(CreateView):
     def setup(self, *args, **kwargs):
         self.acs_device = get_object_or_404(
             AcsDevice,
-            pk=self.kwargs['pk'],
+            pk=kwargs['pk'],
         )
 
     def form_valid(self, form):
