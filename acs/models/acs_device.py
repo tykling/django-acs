@@ -191,28 +191,34 @@ class AcsDevice(AcsBaseModel):
         root = etree.Element("DjangoAcsParameterCache")
         ### loop through all params in valuesrequest
         paramcount = 0
+        param_omitted_count = 0
         for param in values_rpc_response.soap_body.find('cwmp:GetParameterValuesResponse', acs_session.soap_namespaces).find('ParameterList').getchildren():
             paramname = param.xpath("Name")[0].text
             paramcount += 1
 
-            writable = etree.Element("Writable")
-            if paramname in writabledict:
+            # not all params have a lifetime that lasts until values are retrieved
+            # in which case they are omitted
+            if paramname in attributedict:
+                writable = etree.Element("Writable")
                 # add writable value if we can find it
-                writable.text = writabledict[paramname]
-            param.append(writable)
+                if paramname in writabledict:
+                    writable.text = writabledict[paramname]
+                param.append(writable)
 
-            # append acl and notification (and any future attributes that may appear) to our tree
-            for attrib in attributedict[paramname]:
-                param.append(attrib)
+                # append acl and notification (and any future attributes that may appear) to our tree
+                for attrib in attributedict[paramname]:
+                    param.append(attrib)
 
-            # append this to the tree
-            root.append(param)
+                # append this to the tree
+                root.append(param)
+            else:
+                param_omitted_count += 1
 
         ### alright, save the tree
         self.acs_parameters = etree.tostring(root, xml_declaration=True).decode('utf-8')
         self.acs_parameters_time = timezone.now()
         self.save()
-        acs_session.acs_log("Finished processing %s acs parameters for device %s" % (paramcount, self))
+        acs_session.acs_log("Finished processing %s acs parameters (%s parameters omitted) for device %s" % (paramcount, param_omitted_count, self))
         return True
 
     @property
