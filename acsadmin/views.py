@@ -29,6 +29,7 @@ class AcsQueueJobCreate(CreateView):
     fields = ['cwmp_rpc_object_xml', 'reason', 'urgent']
 
     def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
         self.acs_device = get_object_or_404(
             AcsDevice,
             pk=kwargs['pk'],
